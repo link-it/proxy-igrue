@@ -1,5 +1,4 @@
-# ProxyIGRUE
-## Reimplementazione free del Sender IGRUE del MEF
+# ProxyIGRUE: implementazione free del Sender IGRUE del MEF
 
 L'architettura del Sistema di rendicontazione di IGRUE prevede un Sistema Centrale realizzato dal MEF che svolge il ruolo di collettore delle informazioni provenienti dalle diverse amministrazioni tramite servizi in Cooperazione Applicativa (SPCoop). Il MEF ha inizialmente distribuito anche un componente locale (il Sender IGRUE) per facilitare l'utilizzo del servizio da parte degli Enti.
 
@@ -18,16 +17,16 @@ Il Proxy IGRUE, realizzato nel 2010 da Link.it come un'alternativa a forte valor
 
 ## Normative supportate
 
-Monitoraggio unitario Progetti 2007/2013, "Protocollo di colloquio", Versione 3.1, Marzo 2009
-Protocollo Applicativo Alimentazione dati di attuazione 2007-2013, "Allegato al Protocollo di colloquio", Versione 1.1, Aprile 2008
+- Monitoraggio unitario Progetti 2007/2013, "Protocollo di colloquio", Versione 3.1, Marzo 2009
+- Protocollo Applicativo Alimentazione dati di attuazione 2007-2013, "Allegato al Protocollo di colloquio", Versione 1.1, Aprile 2008
 
 ## Licenza
 
 ProxyIgrue - Reimplementazione free del Sender IGRUE del MEF 
 http://igrue.gov4j.it
 
-Copyright (c) 2009-2016 Link.it srl (http://link.it). 
-Copyright (c) 2009 Provincia Autonoma di Bolzano (http://www.provincia.bz.it/). 
+- Copyright (c) 2009-2016 Link.it srl (http://link.it). 
+- Copyright (c) 2009 Provincia Autonoma di Bolzano (http://www.provincia.bz.it/). 
  
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
