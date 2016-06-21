@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns:jee="http://www.springframework.org/schema/jee" 
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xsi:schemaLocation=" 
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"> 
+
+	
+	<!-- 
+		DataSource jndi lookup
+		E' necessario avere a disposizione nell'application server un datasource registrato nell'albero jndi
+	
+		<jee:jndi-lookup id="dataSourceDMM" jndi-name="org.datamart.dataSource"/>
+        <jee:jndi-lookup id="dataSourceTracce" jndi-name="org.openspcoop.dataSource"/>
+        <jee:jndi-lookup id="dataSourceRegistro" jndi-name="org.openspcoop.dataSource.regserv"/>
+		
+		in alternativa e' possibile utilizzare direttamente un datasource 
+		(i @DATASOURCENAME@ devono essere: dataSourceDMM, dataSourceTracce, dataSourceRegistro)
+		
+		<bean id="@DATASOURCENAME@"
+	        class="org.apache.commons.dbcp.BasicDataSource"
+	        destroy-method="close">
+	        <property name="driverClassName" value="@DRIVERJDBC@" />        
+			<property name="url" value="@URL@" />
+	        <property name="username" value="@USERNAME@" />
+	        <property name="password" value="@PASSWORD@" />
+	    </bean>
+    -->
+    <jee:jndi-lookup id="dataSource" jndi-name="${igrue.db.jndiName}"/>
+    <!-- 
+    <bean id="dataSource"
+        class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="org.postgresql.Driver" />        
+		<property name="url" value="jdbc:postgresql://nardi-ws/igrue" />
+        <property name="username" value="igrue" />
+        <property name="password" value="igrue" />
+    </bean>
+        -->
+	<!-- JPA and Hibernate -->
+<!-- 	<context:annotation-config />	 -->
+<!-- 	<tx:annotation-driven /> -->
+	
+	
+<!-- 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"> -->
+<!-- 	    <property name="persistenceUnitName" value="igrue-p_unit" /> -->
+<!-- 	    <property name="dataSource" ref="dataSource" /> -->
+<!-- 	    <property name="jpaVendorAdapter"> -->
+<!-- 	        <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"> -->
+<!-- 	            <property name="databasePlatform" value="org.hibernate.dialect.PostgreSQLDialect" /> -->
+<!-- 	            <property name="showSql" value="false" /> -->
+<!-- 	            <property name="generateDdl" value="true" /> -->
+<!-- 	        </bean> -->
+<!-- 	    </property> -->
+<!-- 		<property name="jpaPropertyMap"> -->
+<!-- 		      <map> -->
+<!-- 		        <entry key="hibernate.hbm2ddl.auto" value="update"/> -->
+<!-- 		       	<entry key="show_sql" value="false"/> -->
+<!-- 		       	<entry key="format_sql" value="true"/> -->
+<!-- 		      </map> -->
+<!-- 	    </property> -->
+<!-- 	</bean> -->
+	 	
+<!-- 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"> -->
+<!--         <property name="entityManagerFactory" ref="entityManagerFactory" /> -->
+<!--     </bean> -->
+	<!-- Object Mapping -->
+	
+	<bean id="loginDAO" class="org.govmix.proxy.igrue.web.service.DBLoginDAO" scope="request"/>
+	<bean id="eventiSearchBean" class="org.govmix.proxy.igrue.web.mbean.EventiSearchBean" scope="session"/>
+	
+	<!-- Service -->
+	<bean id="tabellaContestoService" class="org.govmix.proxy.igrue.web.service.TabellacontestoImpl"/>
+	<bean id="trasmissioniService" class="org.govmix.proxy.igrue.web.service.TrasmissioneImpl" scope="request"/>
+	<bean id="eventiService" class="org.govmix.proxy.igrue.web.service.EventoImpl" scope="request">
+		<property name="search" ref="eventiSearchBean" />
+	</bean>
+	<bean id="esitiService" class="org.govmix.proxy.igrue.web.service.EsitoImpl" scope="request"/>
+	<bean id="avvisiEmailService" class="org.govmix.proxy.igrue.web.service.MailTemplateImpl" scope="request"/>
+	<bean id="codiceAttivazioneService" class="org.govmix.proxy.igrue.web.service.RichiestaCodiceAttivazioneImpl"/>
+	<bean id="avvisiInviatiService" class="org.govmix.proxy.igrue.web.service.MailTraceImpl"/>
+	
+	<bean id="userService" class="org.govmix.proxy.igrue.web.service.UserService" scope="request"/>
+</beans>

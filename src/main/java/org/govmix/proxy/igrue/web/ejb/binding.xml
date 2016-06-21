@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<binding>
+  <mapping name="proxy" class="org.govmix.proxy.igrue.web.ejb.Proxy">
+    <namespace uri="http://igrue.proxy.govmix.org/web/ejb" default="elements"/>
+    <collection field="utente" create-type="java.util.ArrayList">
+      <structure map-as="org.govmix.proxy.igrue.web.ejb.Utente"/>
+    </collection>
+    <collection field="trasmissione" create-type="java.util.ArrayList">
+      <structure map-as="org.govmix.proxy.igrue.web.ejb.Trasmissione"/>
+    </collection>
+    <collection field="ticket" create-type="java.util.ArrayList">
+      <structure map-as="org.govmix.proxy.igrue.web.ejb.Ticket"/>
+    </collection>
+    <collection field="esito" create-type="java.util.ArrayList">
+      <structure map-as="org.govmix.proxy.igrue.web.ejb.Esito"/>
+    </collection>
+    <collection field="evento" create-type="java.util.ArrayList">
+      <structure map-as="org.govmix.proxy.igrue.web.ejb.Evento"/>
+    </collection>
+    <collection field="proprietaEvento" create-type="java.util.ArrayList">
+      <structure map-as="org.govmix.proxy.igrue.web.ejb.ProprietaEvento"/>
+    </collection>
+    <collection field="tipievento" create-type="java.util.ArrayList">
+      <structure map-as="org.govmix.proxy.igrue.web.ejb.Tipievento"/>
+    </collection>
+    <collection field="tabellacontesto" create-type="java.util.ArrayList">
+      <structure map-as="org.govmix.proxy.igrue.web.ejb.Tabellacontesto"/>
+    </collection>
+    <collection field="mailTemplate" create-type="java.util.ArrayList">
+      <structure map-as="org.govmix.proxy.igrue.web.ejb.MailTemplate"/>
+    </collection>
+    <collection field="mailTrace" create-type="java.util.ArrayList">
+      <structure map-as="org.govmix.proxy.igrue.web.ejb.MailTrace"/>
+    </collection>
+  </mapping>
+  <mapping name="utente" class="org.govmix.proxy.igrue.web.ejb.Utente">
+    <namespace uri="http://igrue.proxy.govmix.org/web/ejb" default="elements"/>
+    <value name="id_amministrazione" field="idAmministrazione" usage="required"/>
+    <value name="id_sistema" field="idSistema" usage="required"/>
+    <value name="password" field="password" usage="required"/>
+    <value name="sil" field="sil" usage="optional"/>
+    <value name="mef_password" field="mefPassword" usage="required"/>
+  </mapping>
+  <mapping name="esito" class="org.govmix.proxy.igrue.web.ejb.Esito">
+    <namespace uri="http://igrue.proxy.govmix.org/web/ejb" default="elements"/>
+    <structure name="trasmissione" field="trasmissione" usage="required" type="org.govmix.proxy.igrue.web.ejb.IdTrasmissione"/>
+    <value name="id_amministrazione" field="idAmministrazione" usage="required"/>
+    <value name="id_sistema" field="idSistema" usage="required"/>
+    <value name="file" field="file" usage="required"/>
+    <value name="statisticheelaborazioni" field="statisticheelaborazioni" usage="optional"/>
+    <value name="statisticheelaborazionidescrizione" field="statisticheelaborazionidescrizione" usage="optional"/>
+    <value name="statistichescarti" field="statistichescarti" usage="optional"/>
+    <value name="statistichescartidescrizione" field="statistichescartidescrizione" usage="optional"/>
+    <value name="esitoelaborazioneperanagraficadiriferimento" field="esitoelaborazioneperanagraficadiriferimento" usage="optional"/>
+    <value name="esitoelaborazioneperanagraficadiriferimentodescrizione" field="esitoelaborazioneperanagraficadiriferimentodescrizione" usage="optional"/>
+    <value name="logdeglierrori" field="logdeglierrori" usage="optional"/>
+    <value name="logdeglierroridescrizione" field="logdeglierroridescrizione" usage="optional"/>
+    <value name="logdeglierroriricevuto" field="logdeglierroriricevuto" usage="optional"/>
+    <value name="dataultimocontrollo" field="dataultimocontrollo" usage="optional"/>
+  </mapping>
+  <mapping name="evento" class="org.govmix.proxy.igrue.web.ejb.Evento">
+    <namespace uri="http://igrue.proxy.govmix.org/web/ejb" default="elements"/>
+    <value name="enddate" field="enddate" usage="optional"/>
+    <value name="eventtype_code" field="eventtypeCode" usage="optional"/>
+    <value name="eventtype_description" field="eventtypeDescription" usage="optional"/>
+    <value name="event_id" field="eventId" usage="required"/>
+    <value name="owner_description" field="ownerDescription" usage="optional"/>
+    <value name="owner_idamministrazione" field="ownerIdamministrazione" usage="required"/>
+    <value name="owner_idsistema" field="ownerIdsistema" usage="required"/>
+    <value name="parameterid" field="parameterid" usage="optional"/>
+    <value name="reason" field="reason" usage="optional"/>
+    <value name="startdate" field="startdate" usage="optional"/>
+    <structure field="ticketId" usage="optional" map-as="org.govmix.proxy.igrue.web.ejb.TicketId"/>
+  </mapping>
+  <mapping name="mail-template" class="org.govmix.proxy.igrue.web.ejb.MailTemplate">
+    <namespace uri="http://igrue.proxy.govmix.org/web/ejb" default="elements"/>
+    <value name="template_code" field="templateCode" usage="required"/>
+    <value name="id_amministrazione" field="idAmministrazione" usage="required"/>
+    <value name="id_sistema" field="idSistema" usage="required"/>
+    <value name="mail_oggetto" field="mailOggetto" usage="optional"/>
+    <value name="template_txt" field="templateTxt" usage="optional"/>
+    <value name="last_send" field="lastSend" usage="optional"/>
+    <value name="flag_send_sn" field="flagSendSn" usage="optional"/>
+    <value name="mail_mittente" field="mailMittente" usage="optional"/>
+    <value name="mail_destinatario" field="mailDestinatario" usage="optional"/>
+    <value name="mail_cc" field="mailCc" usage="optional"/>
+    <structure name="utente" field="utente" usage="required" type="org.govmix.proxy.igrue.web.ejb.IdUtente"/>
+  </mapping>
+  <mapping name="proprieta-evento" class="org.govmix.proxy.igrue.web.ejb.ProprietaEvento">
+    <namespace uri="http://igrue.proxy.govmix.org/web/ejb" default="elements"/>
+    <value name="property_id" field="propertyId" usage="required"/>
+    <value name="property_key" field="propertyKey" usage="required"/>
+    <value name="property_value" field="propertyValue" usage="optional"/>
+  </mapping>
+  <mapping name="tabellacontesto" class="org.govmix.proxy.igrue.web.ejb.Tabellacontesto">
+    <namespace uri="http://igrue.proxy.govmix.org/web/ejb" default="elements"/>
+    <structure name="utente" field="utente" usage="required" type="org.govmix.proxy.igrue.web.ejb.IdUtente"/>
+    <value name="id_amministrazione" field="idAmministrazione" usage="required"/>
+    <value name="id_sistema" field="idSistema" usage="required"/>
+    <value name="checksum" field="checksum" usage="optional"/>
+    <value name="dataaggiornamento" field="dataaggiornamento" usage="optional"/>
+    <value name="nometabella" field="nometabella" usage="required"/>
+  </mapping>
+  <mapping name="ticket" class="org.govmix.proxy.igrue.web.ejb.Ticket">
+    <namespace uri="http://igrue.proxy.govmix.org/web/ejb" default="elements"/>
+    <structure name="trasmissione" field="trasmissione" usage="required" type="org.govmix.proxy.igrue.web.ejb.IdTrasmissione"/>
+    <value name="file" field="file" usage="required"/>
+    <value name="id_amministrazione" field="idAmministrazione" usage="required"/>
+    <value name="id_sistema" field="idSistema" usage="required"/>
+    <value name="dataassegnazione" field="dataassegnazione" usage="optional"/>
+    <value name="datafinetrasmissione" field="datafinetrasmissione" usage="optional"/>
+    <value name="filericevuto" field="filericevuto" usage="optional"/>
+    <value name="idticket" field="idticket" usage="required"/>
+  </mapping>
+  <mapping name="tipievento" class="org.govmix.proxy.igrue.web.ejb.Tipievento">
+    <namespace uri="http://igrue.proxy.govmix.org/web/ejb" default="elements"/>
+    <value name="code" field="code" usage="required"/>
+    <value name="description" field="description" usage="optional"/>
+  </mapping>
+  <mapping name="trasmissione" class="org.govmix.proxy.igrue.web.ejb.Trasmissione">
+    <namespace uri="http://igrue.proxy.govmix.org/web/ejb" default="elements"/>
+    <structure name="utente" field="utente" usage="required" type="org.govmix.proxy.igrue.web.ejb.IdUtente"/>
+    <value name="file" field="file" usage="required"/>
+    <value name="id_amministrazione" field="idAmministrazione" usage="required"/>
+    <value name="id_sistema" field="idSistema" usage="required"/>
+    <value name="dataultimoinvio" field="dataultimoinvio" usage="optional"/>
+    <value name="esitoultimoinvio" field="esitoultimoinvio" usage="optional"/>
+    <value name="esitoultimoinviodescrizione" field="esitoultimoinviodescrizione" usage="optional"/>
+    <value name="notificato" field="notificato" usage="optional"/>
+  </mapping>
+  <mapping name="mail-trace" class="org.govmix.proxy.igrue.web.ejb.MailTrace">
+    <namespace uri="http://igrue.proxy.govmix.org/web/ejb" default="elements"/>
+    <structure name="mail-template" field="mailTemplate" usage="required" type="org.govmix.proxy.igrue.web.ejb.MailTemplateId"/>
+    <value name="template_code" field="templateCode" usage="required"/>
+    <value name="id_amministrazione" field="idAmministrazione" usage="required"/>
+    <value name="id_sistema" field="idSistema" usage="required"/>
+    <value name="subject" field="subject" usage="required"/>
+    <value name="content" field="content" usage="required"/>
+    <value name="receivers" field="receivers" usage="required"/>
+    <value name="time" field="time" usage="required"/>
+  </mapping>
+  <mapping class="org.govmix.proxy.igrue.web.ejb.MailTemplateId" abstract="true">
+    <namespace uri="http://igrue.proxy.govmix.org/web/ejb" default="elements"/>
+    <value name="template_code" field="templateCode" usage="required"/>
+    <structure name="utente" field="utente" usage="required" type="org.govmix.proxy.igrue.web.ejb.IdUtente"/>
+  </mapping>
+  <mapping name="proprieta-eventi-id" class="org.govmix.proxy.igrue.web.ejb.ProprietaEventiId">
+    <namespace uri="http://igrue.proxy.govmix.org/web/ejb" default="elements"/>
+    <value name="property-id" field="propertyId" usage="required"/>
+    <value name="property-key" field="propertyKey" usage="required"/>
+  </mapping>
+  <mapping name="mail-trace-id" class="org.govmix.proxy.igrue.web.ejb.MailTraceId">
+    <namespace uri="http://igrue.proxy.govmix.org/web/ejb" default="elements"/>
+    <structure name="template-id" field="templateId" usage="required" type="org.govmix.proxy.igrue.web.ejb.MailTemplateId"/>
+    <value name="subject" field="subject" usage="required"/>
+    <value name="content" field="content" usage="required"/>
+    <value name="receivers" field="receivers" usage="required"/>
+    <value name="time" field="time" usage="required"/>
+  </mapping>
+  <mapping name="ticket-id" class="org.govmix.proxy.igrue.web.ejb.TicketId">
+    <namespace uri="http://igrue.proxy.govmix.org/web/ejb" default="elements"/>
+    <structure name="trasmissione" field="trasmissione" usage="required" type="org.govmix.proxy.igrue.web.ejb.IdTrasmissione"/>
+  </mapping>
+  <mapping class="org.govmix.proxy.igrue.web.ejb.IdUtente" abstract="true">
+    <namespace uri="http://igrue.proxy.govmix.org/web/ejb" default="elements"/>
+    <value name="id-amministrazione" field="idAmministrazione" usage="required"/>
+    <value name="id-sistema" field="idSistema" usage="required"/>
+  </mapping>
+  <mapping name="id-esito" class="org.govmix.proxy.igrue.web.ejb.IdEsito">
+    <namespace uri="http://igrue.proxy.govmix.org/web/ejb" default="elements"/>
+    <structure name="trasmissione" field="trasmissione" usage="required" type="org.govmix.proxy.igrue.web.ejb.IdTrasmissione"/>
+  </mapping>
+  <mapping class="org.govmix.proxy.igrue.web.ejb.IdTrasmissione" abstract="true">
+    <namespace uri="http://igrue.proxy.govmix.org/web/ejb" default="elements"/>
+    <value name="file" field="file" usage="required"/>
+    <structure name="utente" field="utente" usage="required" type="org.govmix.proxy.igrue.web.ejb.IdUtente"/>
+  </mapping>
+  <mapping name="id-tabellacontesto" class="org.govmix.proxy.igrue.web.ejb.IdTabellacontesto">
+    <namespace uri="http://igrue.proxy.govmix.org/web/ejb" default="elements"/>
+    <value name="nometabella" field="nometabella" usage="required"/>
+    <structure name="utente" field="utente" usage="required" type="org.govmix.proxy.igrue.web.ejb.IdUtente"/>
+  </mapping>
+</binding>

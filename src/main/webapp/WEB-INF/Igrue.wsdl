@@ -1,0 +1,382 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:tns5="http://event.system.mef.it" xmlns:tns4="http://dto.webservices.csp.mef.it"
+	xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:impl="http://webservices.csp.eng.it"
+	xmlns:gov="http://ws.igrue.proxy.govmix.org" xmlns:apachesoap="http://xml.apache.org/xml-soap"
+	targetNamespace="http://ws.igrue.proxy.govmix.org">
+	<wsdl:types>
+		<schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+			xmlns:tns5="http://event.system.mef.it" xmlns:tns4="http://dto.webservices.csp.mef.it"
+			xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:intf="http://webservices.csp.eng.it"
+			xmlns:impl="http://webservices.csp.eng.it" xmlns:gov="http://ws.igrue.proxy.govmix.org"
+			xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns="http://www.w3.org/2001/XMLSchema"
+			targetNamespace="http://dto.webservices.csp.mef.it">
+
+			<import namespace="http://webservices.csp.eng.it" />
+
+			<import namespace="http://event.system.mef.it" />
+
+			<complexType name="EventWS">
+				<sequence>
+					<element name="endDate" nillable="true" type="xsd:dateTime" />
+					<element name="eventType" nillable="true" type="tns5:EventType" />
+					<element name="id" type="xsd:long" />
+					<element name="owner" nillable="true" type="tns5:Owner" />
+					<element name="parameterId" nillable="true" type="xsd:string" />
+					<element name="properties" nillable="true" type="impl:ArrayOf_tns4_nillable_Property" />
+					<element name="reason" nillable="true" type="xsd:string" />
+					<element name="startDate" nillable="true" type="xsd:dateTime" />
+				</sequence>
+			</complexType>
+
+			<complexType name="Property">
+				<sequence>
+					<element name="key" nillable="true" type="xsd:string" />
+					<element name="value" nillable="true" type="xsd:string" />
+				</sequence>
+			</complexType>
+
+		</schema>
+		<schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+			xmlns:tns5="http://event.system.mef.it" xmlns:tns4="http://dto.webservices.csp.mef.it"
+			xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:impl="http://webservices.csp.eng.it"
+			xmlns:gov="http://ws.igrue.proxy.govmix.org" xmlns:apachesoap="http://xml.apache.org/xml-soap"
+			xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://webservices.csp.eng.it">
+
+			<import namespace="http://dto.webservices.csp.mef.it" />
+
+			<import namespace="http://event.system.mef.it" />
+
+			<complexType name="ArrayOf_tns4_nillable_Property">
+				<sequence>
+					<element maxOccurs="unbounded" minOccurs="0" name="Property" nillable="true" type="tns4:Property" />
+				</sequence>
+			</complexType>
+
+		</schema>
+		<schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+			xmlns:tns5="http://event.system.mef.it" xmlns:tns4="http://dto.webservices.csp.mef.it"
+			xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:impl="http://webservices.csp.eng.it"
+			xmlns:gov="http://ws.igrue.proxy.govmix.org" xmlns:apachesoap="http://xml.apache.org/xml-soap"
+			xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://event.system.mef.it">
+
+			<complexType name="EventType">
+				<sequence>
+					<element name="code" type="xsd:int" />
+					<element name="description" nillable="true" type="xsd:string" />
+				</sequence>
+			</complexType>
+
+			<complexType name="Owner">
+				<sequence>
+					<element name="description" nillable="true" type="xsd:string" />
+					<element name="idAmministrazione" nillable="true" type="xsd:string" />
+					<element name="idSistema" type="xsd:int" />
+				</sequence>
+			</complexType>
+
+		</schema>
+		<schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+			xmlns:tns5="http://event.system.mef.it" xmlns:tns4="http://dto.webservices.csp.mef.it"
+			xmlns:tns="http://ws.igrue.proxy.govmix.org" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+			xmlns:impl="http://webservices.csp.eng.it" xmlns:gov="http://ws.igrue.proxy.govmix.org"
+			xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns="http://www.w3.org/2001/XMLSchema"
+			elementFormDefault="qualified" targetNamespace="http://ws.igrue.proxy.govmix.org">
+
+			<complexType name="Credenziali">
+				<sequence>
+					<element name="idAmministrazione" type="string" />
+					<element name="idSistema" type="int" />
+					<element name="password" type="string" />
+				</sequence>
+			</complexType>
+
+
+			<element name="sendDatiAttuazione">
+				<complexType>
+					<sequence>
+						<element name="credenziali" type="tns:Credenziali" />
+					</sequence>
+				</complexType>
+			</element>
+
+
+			<element name="sendDatiAttuazioneResponse">
+				<complexType>
+					<sequence>
+						<element name="idAssegnato" type="xsd:int" />
+					</sequence>
+				</complexType>
+			</element>
+
+
+
+
+
+			<element name="getEsiti">
+				<complexType>
+					<sequence>
+						<element minOccurs="0" name="credenziali" type="tns:Credenziali" />
+						<element name="idAssegnato" nillable="false" type="xsd:int" />
+					</sequence>
+				</complexType>
+			</element>
+
+
+			<element name="getEsitiResponse">
+				<complexType>
+					<sequence>
+						<element name="file" nillable="false" type="xsd:int" />
+						<element name="statisticheelaborazioni" type="xsd:int" />
+						<element name="statisticheelaborazionidescrizione" type="xsd:string" />
+						<element name="statistichescarti" type="xsd:int" />
+						<element name="statistichescartidescrizione" type="xsd:string" />
+						<element name="esitoelaborazioneperanagraficadiriferimento" type="xsd:int" />
+						<element name="esitoelaborazioneperanagraficadiriferimentodescrizione" type="xsd:string" />
+						<element name="logdeglierrori" type="xsd:int" />
+						<element name="logdeglierroridescrizione" type="xsd:string" />
+						<element name="dataultimocontrollo" type="xsd:dateTime" />
+					</sequence>
+				</complexType>
+			</element>
+
+
+
+			<element name="getEventi">
+				<complexType>
+					<sequence>
+						<element minOccurs="0" name="credenziali" type="tns:Credenziali" />
+						<element name="startdate" type="xsd:dateTime" />
+					</sequence>
+				</complexType>
+			</element>
+
+
+			<element name="getEventiResponse">
+				<complexType>
+					<sequence>
+						<element maxOccurs="unbounded" minOccurs="1" name="evento">
+							<complexType>
+								<sequence>
+									<element name="enddate" type="xsd:dateTime" />
+									<element name="eventtype_code" type="xsd:int" />
+									<element name="eventtype_description" type="xsd:string" />
+									<element name="id" nillable="false" type="xsd:int" />
+									<element name="owner_description" type="xsd:string" />
+									<element name="owner_idamministrazione" type="xsd:string" />
+									<element name="owner_idsistema" type="xsd:int" />
+									<element name="parameterid" type="xsd:string" />
+									<element name="reason" type="xsd:string" />
+									<element name="startdate" type="xsd:dateTime" />
+								</sequence>
+							</complexType>
+						</element>
+					</sequence>
+				</complexType>
+			</element>
+
+
+			<element name="getTabellaContesto">
+				<complexType>
+					<sequence>
+						<element name="credenziali" type="tns:Credenziali" />
+						<element name="nometabella" type="xsd:string" />
+					</sequence>
+				</complexType>
+			</element>
+
+			<element name="getTabellaContestoResponse">
+				<complexType>
+					<sequence>
+						<element name="dataaggiornamento" type="xsd:dateTime" />
+					</sequence>
+				</complexType>
+			</element>
+
+
+			<element name="getCodiceProceduraAttivazione">
+				<complexType>
+					<sequence>
+						<xsd:element name="credenziali" type="tns:Credenziali" />
+					</sequence>
+				</complexType>
+			</element>
+
+
+			<element name="getCodiceProceduraAttivazioneResponse">
+				<complexType>
+					<sequence>
+						<element name="dataAssegnazione" nillable="true" type="xsd:dateTime" />
+						<element name="idAmministrazione" nillable="true" type="xsd:string" />
+						<element name="idProceduraAttivazione" nillable="true" type="xsd:string" />
+						<element name="idSistema" type="xsd:int" />
+					</sequence>
+				</complexType>
+			</element>
+		</schema>
+	</wsdl:types>
+	
+	<wsdl:message name="CodiceProceduraAttivazioneResponse">
+		<wsdl:part element="gov:getCodiceProceduraAttivazioneResponse" name="response" />
+	</wsdl:message>
+	
+	<wsdl:message name="TrasmissioneDatiRequest">
+		<wsdl:part element="gov:sendDatiAttuazione" name="request" />
+		<wsdl:part name="bytes" type="xsd:hexBinary" />
+	</wsdl:message>
+	
+	<wsdl:message name="TabellaContestoRequest">
+		<wsdl:part element="gov:getTabellaContesto" name="request" />
+	</wsdl:message>
+	
+	<wsdl:message name="EventiResponse">
+		<wsdl:part element="gov:getEventiResponse" name="response" />
+	</wsdl:message>
+	
+	<wsdl:message name="CodiceProceduraAttivazioneRequest">
+		<wsdl:part element="gov:getCodiceProceduraAttivazione" name="request" />
+	</wsdl:message>
+
+	<wsdl:message name="TabellaContestoResponse">
+		<wsdl:part element="gov:getTabellaContestoResponse" name="response" />
+		<wsdl:part name="content" type="xsd:hexBinary" />
+	</wsdl:message>
+	
+	<wsdl:message name="EsitoResponse">
+		<wsdl:part element="gov:getEsitiResponse" name="response" />
+		<wsdl:part name="statisticheelaborazioni" type="xsd:hexBinary" />
+		<wsdl:part name="statistichescarti" type="xsd:hexBinary" />
+		<wsdl:part name="esitoelaborazioneperanagraficadiriferimento" type="xsd:hexBinary" />
+		<wsdl:part name="logdeglierrori" type="xsd:hexBinary" />
+	</wsdl:message>
+	
+	<wsdl:message name="EsitoRequest">
+		<wsdl:part element="gov:getEsiti" name="request" />
+	</wsdl:message>
+
+	<wsdl:message name="TrasmissioneDatiResponse">
+		<wsdl:part element="gov:sendDatiAttuazioneResponse" name="response" />
+	</wsdl:message>
+
+	<wsdl:message name="EventiRequest">
+		<wsdl:part element="gov:getEventi" name="request" />
+	</wsdl:message>
+	
+	<wsdl:portType name="Igrue">
+		<wsdl:operation name="sendDatiAttuazione">
+			<wsdl:input message="gov:TrasmissioneDatiRequest" name="TrasmissioneDatiRequest" />
+			<wsdl:output message="gov:TrasmissioneDatiResponse" name="TrasmissioneDatiResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="getEsiti">
+			<wsdl:input message="gov:EsitoRequest" name="EsitoRequest" />
+			<wsdl:output message="gov:EsitoResponse" name="EsitoResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="getEventi">
+			<wsdl:input message="gov:EventiRequest" name="EventiRequest" />
+			<wsdl:output message="gov:EventiResponse" name="EventiResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="getTabellaContesto">
+			<wsdl:input message="gov:TabellaContestoRequest" name="TabellaContestoRequest" /> 
+			<wsdl:output message="gov:TabellaContestoResponse" name="TabellaContestoResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="getCodiceProceduraAttivazione">
+			<wsdl:input message="gov:CodiceProceduraAttivazioneRequest"	name="CodiceProceduraAttivazioneRequest" />
+			<wsdl:output message="gov:CodiceProceduraAttivazioneResponse" name="CodiceProceduraAttivazioneResponse" />
+		</wsdl:operation>
+
+	</wsdl:portType>
+
+	<wsdl:binding name="IgrueSoapBinding" type="gov:Igrue">
+		<wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="sendDatiAttuazione">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="TrasmissioneDatiRequest">
+				<mime:multipartRelated>
+					<mime:part>
+						<wsdlsoap:body use="literal" />
+					</mime:part>
+					<mime:part>
+						<mime:content part="bytes" type="application/zip" />
+					</mime:part>
+				</mime:multipartRelated>
+			</wsdl:input>
+			<wsdl:output name="TrasmissioneDatiResponse">
+				<wsdlsoap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getEsiti">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="EsitoRequest">
+				<wsdlsoap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="EsitoResponse">
+				<mime:multipartRelated>
+					<mime:part>
+						<wsdlsoap:body use="literal" />
+					</mime:part>
+					<mime:part>
+						<mime:content part="statisticheelaborazioni" type="application/zip" />
+					</mime:part>
+					<mime:part>
+						<mime:content part="statistichescarti" type="application/zip" />
+					</mime:part>
+					<mime:part>
+						<mime:content part="esitoelaborazioneperanagraficadiriferimento"
+							type="application/zip" />
+					</mime:part>
+					<mime:part>
+						<mime:content part="logdeglierrori" type="application/zip" />
+					</mime:part>
+				</mime:multipartRelated>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getEventi">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="EventiRequest">
+				<wsdlsoap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="EventiResponse">
+				<wsdlsoap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getTabellaContesto">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="TabellaContestoRequest">
+				<wsdlsoap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="TabellaContestoResponse">
+				<mime:multipartRelated>
+					<mime:part>
+						<wsdlsoap:body use="literal" />
+					</mime:part>
+					<mime:part>
+						<mime:content part="content" type="application/zip" />
+					</mime:part>
+				</mime:multipartRelated>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getCodiceProceduraAttivazione">
+			<wsdlsoap:operation soapAction="" />
+			<wsdl:input name="CodiceProceduraAttivazioneRequest">
+				<wsdlsoap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="CodiceProceduraAttivazioneResponse">
+				<wsdlsoap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="IgrueService">
+		<wsdl:port binding="gov:IgrueSoapBinding" name="Igrue">
+			<wsdlsoap:address location="http://localhost:8080/proxyigrue/ws" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,93 @@
+<ui:composition template="/templates/defaultTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:link="http://www.link.it">
+
+
+	<ui:define name="navbar">
+		<ul>
+			<li>
+				<h:outputText value="/Trasmissioni" />
+			</li>
+			<li>
+				<h:outputText value="Lista" />
+			</li>
+		</ul>
+	</ui:define>
+	
+	<ui:define name="body">
+		
+		<h:form>
+			<rich:panel>
+				<f:facet name="header">
+					<h:outputText value="Filtri" />
+				</f:facet>
+				
+				<h:panelGrid columns="2">
+					<h:outputText value="Descrizione" />
+					<rich:comboBox value="#{eventiSearchBean.descrizione}">
+						<f:selectItems value="#{eventiBean.descrizioni}"/>
+						<a4j:support event="onselect" reRender="eventiList"/>
+					</rich:comboBox>
+					
+				</h:panelGrid>
+			</rich:panel>
+		</h:form>
+		<rich:spacer height="20px"/>
+		<h:form>
+			<link:dataTable
+				id="eventiList"
+				value="#{eventiDataModel}"
+				headerText="Lista Trasmissioni"
+				showSelectRemoveAll="false"
+				mBean="#{eventiBean}">
+				<f:facet name="noData">
+							<h:outputText value="Nessun Evento Trovato." />
+						</f:facet>
+				
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="Id" />
+					</f:facet>
+					<h:outputText value="#{item.eventId}" />
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="Data Inizio" />
+					</f:facet>
+					<h:outputText value="#{item.startdate}">
+						<f:convertDateTime type="both"/>
+					</h:outputText>
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="Parameter-Id" />
+					</f:facet>
+					<h:outputText value="#{item.parameterid}" />
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="Descrizione" />
+					</f:facet>
+					<h:outputText value="#{item.descrizione}" />
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="Motivo" />
+					</f:facet>
+					<h:outputText value="#{item.reason}" />
+				</rich:column>
+			</link:dataTable>
+		</h:form>
+		
+	</ui:define>
+
+</ui:composition>

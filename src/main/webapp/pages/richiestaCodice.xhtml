@@ -1,0 +1,37 @@
+<ui:composition template="/templates/defaultTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:a4j="http://richfaces.org/a4j">
+		
+		<ui:define name="navbar">
+			<ul>
+				<h:outputText value="/Codice Attivazione" />
+			</ul>
+		</ui:define>
+		
+		<ui:define name="body">
+			<rich:messages/>
+			
+			<a4j:outputPanel id="info">
+				<h:panelGrid columns="2" rendered="#{not empty codiceAttivazioneBean.codice}">
+					<h:outputLabel value="ID Procedura Attivazione:"/>
+					<h:outputText  value="#{codiceAttivazioneBean.codice.idProceduraAttivazione}" style="font-weight:bold;"/>
+					<h:outputLabel value="ID Amministrazione:"/>
+					<h:outputText  value="#{codiceAttivazioneBean.codice.idAmministrazione}" style="font-weight:bold;"/>
+					<h:outputLabel value="ID Sistema:"/>
+					<h:outputText  value="#{codiceAttivazioneBean.codice.idSistema}" style="font-weight:bold;"/>
+					<h:outputLabel value="Data Assegnazione:"/>
+					<h:outputText  value="#{codiceAttivazioneBean.dataAssegnazione.time}" style="font-weight:bold;">
+						<f:convertDateTime type="both" locale="it_IT"/>
+					</h:outputText>
+				</h:panelGrid>
+			</a4j:outputPanel>
+			<rich:spacer height="20px"/>
+			<h:form>
+				<a4j:commandButton action="#{codiceAttivazioneBean.richiediCodice}" value="Richiedi Codice" reRender="info"/>				
+			</h:form>
+		</ui:define>
+</ui:composition>

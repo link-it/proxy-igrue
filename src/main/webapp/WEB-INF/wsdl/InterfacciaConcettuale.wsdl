@@ -1,0 +1,641 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:ws="http://webservices.csp.eng.it" 
+	xmlns:ge="http://gestioneeventi.messages.webservices.csp.mef.it"
+	xmlns:t="http://tipologie.messages.webservices.csp.mef.it"
+	xmlns:ee="http://esitoelaborazione.messages.webservices.csp.mef.it"
+	xmlns:tr="http://trasmissione.messages.webservices.csp.mef.it"
+	xmlns:ro="http://richiestaoperazione.messages.webservices.csp.mef.it"
+	xmlns="http://www.w3.org/2001/XMLSchema" 
+	xmlns:event="http://event.system.mef.it" 
+	xmlns:dto="http://dto.webservices.csp.mef.it" 
+	xmlns:msg="http://messages.webservices.csp.mef.it"
+	targetNamespace="http://webservices.csp.eng.it">
+
+	<wsdl:types>
+		<schema targetNamespace="http://dto.webservices.csp.mef.it">
+
+			<import namespace="http://webservices.csp.eng.it" />
+			<import namespace="http://event.system.mef.it" />
+
+			<complexType name="Credenziali">
+				<sequence>
+					<element name="idAmministrazione" nillable="true" type="string" />
+					<element name="idSistema" type="int" />
+					<element name="password" nillable="true" type="string" />
+				</sequence>
+			</complexType>
+			<complexType name="Ticket">
+				<sequence>
+					<element name="dataAssegnazione" nillable="true" type="dateTime" />
+					<element name="dataFineTrasmissione" nillable="true" type="dateTime" />
+					<element name="fileRicevuto" type="boolean" />
+					<element name="idAmministrazione" nillable="true" type="string" />
+					<element name="idSistema" type="int" />
+					<element name="idTicket" type="long" />
+				</sequence>
+			</complexType>
+			<complexType name="EsitoOperazione">
+				<sequence>
+					<element name="codiceEsito" type="int" />
+					<element name="descrizioneEsito" nillable="true" type="string" />
+					<element name="dettaglio" nillable="true" type="string" />
+					<element name="timeStamp" nillable="true" type="dateTime" />
+				</sequence>
+			</complexType>
+			<complexType name="EventWS">
+				<sequence>
+					<element name="endDate" nillable="true" type="dateTime" />
+					<element name="eventType" nillable="true" type="event:EventType" />
+					<element name="id" type="long" />
+					<element name="owner" nillable="true" type="event:Owner" />
+					<element name="parameterId" nillable="true" type="string" />
+					<element name="properties" nillable="true" type="ws:ArrayOf_tns4_nillable_Property" />
+					<element name="reason" nillable="true" type="string" />
+					<element name="startDate" nillable="true" type="dateTime" />
+				</sequence>
+			</complexType>
+			<complexType name="Property">
+				<sequence>
+					<element name="key" nillable="true" type="string" />
+					<element name="value" nillable="true" type="string" />
+				</sequence>
+			</complexType>
+			<complexType name="CodiceProceduraAttivazione">
+				<sequence>
+					<element name="dataAssegnazione" nillable="true" type="dateTime" />
+					<element name="idAmministrazione" nillable="true" type="string" />
+					<element name="idProceduraAttivazione" nillable="true" type="string" />
+					<element name="idSistema" type="int" />
+				</sequence>
+			</complexType>
+			<complexType name="TipoOperazione">
+				<sequence>
+					<element name="codiceTipoOperazione" type="int" />
+					<element name="descrizioneTipoOperazione" nillable="true" type="string" />
+				</sequence>
+			</complexType>
+		</schema>
+
+
+		<schema targetNamespace="http://webservices.csp.eng.it">
+
+			<import namespace="http://dto.webservices.csp.mef.it" />
+			<import namespace="http://event.system.mef.it" />
+
+			<complexType name="ArrayOf_tns5_nillable_EventType">
+				<sequence>
+					<element maxOccurs="unbounded" minOccurs="0" name="tipiEvento" nillable="true" type="event:EventType" />
+				</sequence>
+			</complexType>
+			<complexType name="ArrayOf_tns4_nillable_Property">
+				<sequence>
+					<element maxOccurs="unbounded" minOccurs="0" name="properties" nillable="true" type="dto:Property" />
+				</sequence>
+			</complexType>
+			<complexType name="ArrayOf_tns4_nillable_EventWS">
+				<sequence>
+					<element maxOccurs="unbounded" minOccurs="0" name="eventi" nillable="true" type="dto:EventWS" />
+				</sequence>
+			</complexType>
+			<complexType name="ArrayOf_xsd_long">
+				<sequence>
+					<element maxOccurs="unbounded" minOccurs="0" name="eventIds" type="long" />
+				</sequence>
+			</complexType>
+			<complexType name="ArrayOf_xsd_boolean">
+				<sequence>
+					<element maxOccurs="unbounded" minOccurs="0" name="deleted" type="boolean" />
+				</sequence>
+			</complexType>
+			<complexType name="ArrayOf_xsd_nillable_string">
+				<sequence>
+					<element maxOccurs="unbounded" minOccurs="0" name="string" nillable="true" type="string" />
+				</sequence>
+			</complexType>
+			<complexType name="ArrayOf_tns4_nillable_TipoOperazione">
+				<sequence>
+					<element maxOccurs="unbounded" minOccurs="0" name="tipiOperazione" nillable="true" type="dto:TipoOperazione" />
+				</sequence>
+			</complexType>
+		</schema>
+
+
+		<schema targetNamespace="http://messages.webservices.csp.mef.it">
+
+			<import namespace="http://dto.webservices.csp.mef.it" />
+			<complexType name="GenericInMessage">
+				<sequence>
+					<element name="credenziali" nillable="true" type="dto:Credenziali" />
+				</sequence>
+			</complexType>
+			<complexType name="GenericOutMessage">
+				<sequence>
+					<element name="esitoOperazione" nillable="true"
+						type="dto:EsitoOperazione" />
+				</sequence>
+			</complexType>
+			<complexType name="GenericTicketInMessage">
+				<complexContent>
+					<extension base="msg:GenericInMessage">
+						<sequence>
+							<element name="ticket" nillable="true" type="dto:Ticket" />
+						</sequence>
+					</extension>
+				</complexContent>
+			</complexType>
+		</schema>
+
+		<schema targetNamespace="http://event.system.mef.it">
+			<complexType name="EventType">
+				<sequence>
+					<element name="code" type="int" />
+					<element name="description" nillable="true" type="string" />
+				</sequence>
+			</complexType>
+			<complexType name="Owner">
+				<sequence>
+					<element name="description" nillable="true" type="string" />
+					<element name="idAmministrazione" nillable="true" type="string" />
+					<element name="idSistema" type="int" />
+				</sequence>
+			</complexType>
+		</schema>
+
+		<schema targetNamespace="http://esitoelaborazione.messages.webservices.csp.mef.it">
+			<import namespace="http://messages.webservices.csp.mef.it" />
+			<complexType name="StatisticheElaborazioniInAsAttachments">
+				<complexContent>
+					<extension base="msg:GenericTicketInMessage">
+						<sequence />
+					</extension>
+				</complexContent>
+			</complexType>
+			<element name="StatisticheElaborazioniInAsAttachments" nillable="true" type="ee:StatisticheElaborazioniInAsAttachments" />
+			<complexType name="StatisticheElaborazioniOutAsAttachment">
+				<complexContent>
+					<extension base="msg:GenericOutMessage">
+						<sequence />
+					</extension>
+				</complexContent>
+			</complexType>
+			<element name="StatisticheElaborazioniOutAsAttachment" nillable="true" type="ee:StatisticheElaborazioniOutAsAttachment" />
+			<complexType name="EsitoAnagraficaRiferimentoIn">
+				<complexContent>
+					<extension base="msg:GenericTicketInMessage">
+						<sequence />
+					</extension>
+				</complexContent>
+			</complexType>
+			<element name="EsitoAnagraficaRiferimentoIn" nillable="true" type="ee:EsitoAnagraficaRiferimentoIn" />
+			<complexType name="EsitoAnagraficaRiferimentoOut">
+				<complexContent>
+					<extension base="msg:GenericOutMessage">
+						<sequence />
+					</extension>
+				</complexContent>
+			</complexType>
+			<element name="EsitoAnagraficaRiferimentoOut" nillable="true" type="ee:EsitoAnagraficaRiferimentoOut" />
+			<complexType name="LogErroriIn">
+				<complexContent>
+					<extension base="msg:GenericTicketInMessage">
+						<sequence />
+					</extension>
+				</complexContent>
+			</complexType>
+			<element name="LogErroriIn" nillable="true" type="ee:LogErroriIn" />
+			<complexType name="LogErroriOut">
+				<complexContent>
+					<extension base="msg:GenericOutMessage">
+						<sequence />
+					</extension>
+				</complexContent>
+			</complexType>
+			<element name="LogErroriOut" nillable="true" type="ee:LogErroriOut" />
+			<complexType name="StatisticheScartiInAsAttachment">
+				<complexContent>
+					<extension base="msg:GenericTicketInMessage">
+						<sequence />
+					</extension>
+				</complexContent>
+			</complexType>
+			<element name="StatisticheScartiInAsAttachment" nillable="true" type="ee:StatisticheScartiInAsAttachment" />
+			<complexType name="StatisticheScartiOutAsAttachment">
+				<complexContent>
+					<extension base="msg:GenericOutMessage">
+						<sequence />
+					</extension>
+				</complexContent>
+			</complexType>
+			<element name="StatisticheScartiOutAsAttachment" nillable="true" type="ee:StatisticheScartiOutAsAttachment" />
+			<complexType name="Content">
+				<attribute name="href" type="anyURI" />
+			</complexType>
+		</schema>
+
+
+
+		<schema targetNamespace="http://gestioneeventi.messages.webservices.csp.mef.it">
+			<import namespace="http://webservices.csp.eng.it" />
+			<import namespace="http://messages.webservices.csp.mef.it" />
+			<complexType name="ListaTipiIn">
+				<complexContent>
+					<extension base="msg:GenericInMessage">
+						<sequence />
+					</extension>
+				</complexContent>
+			</complexType>
+			<element name="ListaTipiIn" nillable="true" type="ge:ListaTipiIn" />
+			<complexType name="ListaTipiOut">
+				<complexContent>
+					<extension base="msg:GenericOutMessage">
+						<sequence>
+							<element name="tipiEvento" nillable="true" type="ws:ArrayOf_tns5_nillable_EventType" />
+						</sequence>
+					</extension>
+				</complexContent>
+			</complexType>
+			<element name="ListaTipiOut" nillable="true" type="ge:ListaTipiOut" />
+			<complexType name="ListaIn">
+				<complexContent>
+					<extension base="msg:GenericInMessage">
+						<sequence>
+							<element name="parameterId" nillable="true" type="string" />
+							<element name="listGenericEvents" type="boolean" />
+						</sequence>
+					</extension>
+				</complexContent>
+			</complexType>
+			<element name="ListaIn" nillable="true" type="ge:ListaIn" />
+			<complexType name="ListaOut">
+				<complexContent>
+					<extension base="msg:GenericOutMessage">
+						<sequence>
+							<element name="eventi" nillable="true"
+								type="ws:ArrayOf_tns4_nillable_EventWS" />
+						</sequence>
+					</extension>
+				</complexContent>
+			</complexType>
+			<element name="ListaOut" nillable="true" type="ge:ListaOut" />
+			<complexType name="CancellaIn">
+				<complexContent>
+					<extension base="msg:GenericInMessage">
+						<sequence>
+							<element name="eventIds" nillable="true" type="ws:ArrayOf_xsd_long" />
+						</sequence>
+					</extension>
+				</complexContent>
+			</complexType>
+			<element name="CancellaIn" nillable="true" type="ge:CancellaIn" />
+			<complexType name="CancellaOut">
+				<complexContent>
+					<extension base="msg:GenericOutMessage">
+						<sequence>
+							<element name="deleted" nillable="true" type="ws:ArrayOf_xsd_boolean" />
+						</sequence>
+					</extension>
+				</complexContent>
+			</complexType>
+			<element name="CancellaOut" nillable="true" type="ge:CancellaOut" />
+		</schema>
+
+		<schema targetNamespace="http://richiestaoperazione.messages.webservices.csp.mef.it">
+			<import namespace="http://webservices.csp.eng.it" />
+			<import namespace="http://messages.webservices.csp.mef.it" />
+			<complexType name="ListaTipiOperazioneIn">
+				<complexContent>
+					<extension base="msg:GenericInMessage">
+						<sequence />
+					</extension>
+				</complexContent>
+			</complexType>
+			<element name="ListaTipiOperazioneIn" nillable="true" type="ro:ListaTipiOperazioneIn" />
+			<complexType name="ListaTipiOperazioneOut">
+				<complexContent>
+					<extension base="msg:GenericOutMessage">
+						<sequence>
+							<element name="tipiOperazione" nillable="true" type="ws:ArrayOf_tns4_nillable_TipoOperazione" />
+						</sequence>
+					</extension>
+				</complexContent>
+			</complexType>
+			<element name="ListaTipiOperazioneOut" nillable="true" type="ro:ListaTipiOperazioneOut" />
+			<complexType name="RichiestaIn">
+				<complexContent>
+					<extension base="msg:GenericInMessage">
+						<sequence>
+							<element name="altriParametri" nillable="true"
+								type="ws:ArrayOf_tns4_nillable_Property" />
+							<element name="codiceTipoOperazione" type="int" />
+							<element name="parametro" nillable="true" type="string" />
+						</sequence>
+					</extension>
+				</complexContent>
+			</complexType>
+			<element name="RichiestaIn" nillable="true" type="ro:RichiestaIn" />
+			<complexType name="RichiestaOut">
+				<complexContent>
+					<extension base="msg:GenericOutMessage">
+						<sequence>
+							<element name="dataRichiestaOperazione" nillable="true"
+								type="dateTime" />
+							<element name="identificativoRichiesta" type="long" />
+						</sequence>
+					</extension>
+				</complexContent>
+			</complexType>
+			<element name="RichiestaOut" nillable="true" type="ro:RichiestaOut" />
+		</schema>
+
+
+
+		<schema targetNamespace="http://tipologie.messages.webservices.csp.mef.it">
+			<import namespace="http://messages.webservices.csp.mef.it" />
+			<import namespace="http://webservices.csp.eng.it" />
+			<complexType name="AllDatiContestoIn">
+				<complexContent>
+					<extension base="msg:GenericInMessage">
+						<sequence />
+					</extension>
+				</complexContent>
+			</complexType>
+			<element name="AllDatiContestoIn" nillable="true" type="t:AllDatiContestoIn" />
+			<complexType name="AllDatiContestoOut">
+				<complexContent>
+					<extension base="msg:GenericOutMessage">
+						<sequence />
+					</extension>
+				</complexContent>
+			</complexType>
+			<element name="AllDatiContestoOut" nillable="true"
+				type="t:AllDatiContestoOut" />
+			<complexType name="DatiContestoPerTipologiaIn">
+				<complexContent>
+					<extension base="msg:GenericInMessage">
+						<sequence>
+							<element name="idTipologieRichieste" nillable="true" type="ws:ArrayOf_xsd_nillable_string" />
+						</sequence>
+					</extension>
+				</complexContent>
+			</complexType>
+			<element name="DatiContestoPerTipologiaIn" nillable="true" type="t:DatiContestoPerTipologiaIn" />
+			<complexType name="DatiContestoPerTipologiaOut">
+				<complexContent>
+					<extension base="msg:GenericOutMessage">
+						<sequence />
+					</extension>
+				</complexContent>
+			</complexType>
+			<element name="DatiContestoPerTipologiaOut" nillable="true" type="t:DatiContestoPerTipologiaOut" />
+			<complexType name="Content">
+				<attribute name="href" type="anyURI" />
+			</complexType>
+		</schema>
+
+
+		<schema targetNamespace="http://trasmissione.messages.webservices.csp.mef.it">
+			<import namespace="http://dto.webservices.csp.mef.it" />
+			<import namespace="http://messages.webservices.csp.mef.it" />
+
+			<complexType name="PrenotazioneTrasmissioneIn">
+				<complexContent>
+					<extension base="msg:GenericInMessage">
+						<sequence />
+					</extension>
+				</complexContent>
+			</complexType>
+			<element name="PrenotazioneTrasmissioneIn" nillable="true" type="tr:PrenotazioneTrasmissioneIn" />
+			<complexType name="PrenotazioneTrasmissioneOut">
+				<complexContent>
+					<extension base="msg:GenericOutMessage">
+						<sequence>
+							<element name="ticket" nillable="true" type="dto:Ticket" />
+						</sequence>
+					</extension>
+				</complexContent>
+			</complexType>
+			<element name="PrenotazioneTrasmissioneOut" nillable="true" type="tr:PrenotazioneTrasmissioneOut" />
+			<complexType name="AssegnazioneCodProcAttIn">
+				<complexContent>
+					<extension base="msg:GenericInMessage">
+						<sequence />
+					</extension>
+				</complexContent>
+			</complexType>
+			<element name="AssegnazioneCodProcAttIn" nillable="true" type="tr:AssegnazioneCodProcAttIn" />
+			<complexType name="AssegnazioneCodProcAttOut">
+				<complexContent>
+					<extension base="msg:GenericOutMessage">
+						<sequence>
+							<element name="codiceProceduraAttivazione" nillable="true"
+								type="dto:CodiceProceduraAttivazione" />
+						</sequence>
+					</extension>
+				</complexContent>
+			</complexType>
+			<element name="AssegnazioneCodProcAttOut" nillable="true" type="tr:AssegnazioneCodProcAttOut" />
+			<complexType name="InviaFileIn">
+				<complexContent>
+					<extension base="msg:GenericTicketInMessage">
+						<sequence />
+					</extension>
+				</complexContent>
+			</complexType>
+			<element name="InviaFileIn" nillable="true" type="tr:InviaFileIn" />
+			<complexType name="InviaFileOut">
+				<complexContent>
+					<extension base="msg:GenericOutMessage">
+						<sequence />
+					</extension>
+				</complexContent>
+			</complexType>
+			<element name="InviaFileOut" nillable="true" type="tr:InviaFileOut" />
+			<complexType name="Content">
+				<attribute name="href" type="anyURI" />
+			</complexType>
+		</schema>
+
+	</wsdl:types>
+
+
+
+	<wsdl:message name="listaTipiResponse">
+		<wsdl:part name="listaTipiReturn" type="ge:ListaTipiOut" />
+	</wsdl:message>
+	<wsdl:message name="listaRequest">
+		<wsdl:part name="inMessage" type="ge:ListaIn" />
+	</wsdl:message>
+	<wsdl:message name="cancellaRequest">
+		<wsdl:part name="inMessage" type="ge:CancellaIn" />
+	</wsdl:message>
+	<wsdl:message name="listaTipiRequest">
+		<wsdl:part name="inMessage" type="ge:ListaTipiIn" />
+	</wsdl:message>
+	<wsdl:message name="cancellaResponse">
+		<wsdl:part name="cancellaReturn" type="ge:CancellaOut" />
+	</wsdl:message>
+	<wsdl:message name="listaResponse">
+		<wsdl:part name="listaReturn" type="ge:ListaOut" />
+	</wsdl:message>
+
+
+
+
+
+	<wsdl:portType name="GestioneEventi">
+		<wsdl:operation name="listaTipi" parameterOrder="inMessage">
+			<wsdl:input message="ws:listaTipiRequest" name="listaTipiRequest" />
+			<wsdl:output message="ws:listaTipiResponse" name="listaTipiResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="lista" parameterOrder="inMessage">
+			<wsdl:input message="ws:listaRequest" name="listaRequest" />
+			<wsdl:output message="ws:listaResponse" name="listaResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="cancella" parameterOrder="inMessage">
+			<wsdl:input message="ws:cancellaRequest" name="cancellaRequest" />
+			<wsdl:output message="ws:cancellaResponse" name="cancellaResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+
+
+	<wsdl:message name="esitoAnagraficaRiferimentoRequest">
+		<wsdl:part name="inMessage" type="ee:EsitoAnagraficaRiferimentoIn" />
+		<wsdl:part name="content" type="ee:Content" />
+	</wsdl:message>
+	<wsdl:message name="statisticheScartiAsAttachmentRequest">
+		<wsdl:part name="inMessage" type="ee:StatisticheScartiInAsAttachment" />
+		<wsdl:part name="content" type="ee:Content" />
+	</wsdl:message>
+	<wsdl:message name="esitoAnagraficaRiferimentoResponse">
+		<wsdl:part name="esitoAnagraficaRiferimentoReturn" type="ee:EsitoAnagraficaRiferimentoOut" />
+		<wsdl:part name="content" type="ee:Content" />
+	</wsdl:message>
+	<wsdl:message name="logErroriResponse">
+		<wsdl:part name="logErroriReturn" type="ee:LogErroriOut" />
+		<wsdl:part name="content" type="ee:Content" />
+	</wsdl:message>
+	<wsdl:message name="statisticheElaborazioniAsAttachmentResponse">
+		<wsdl:part name="statisticheElaborazioniAsAttachmentReturn" type="ee:StatisticheElaborazioniOutAsAttachment" />
+		<wsdl:part name="content" type="ee:Content" />
+	</wsdl:message>
+	<wsdl:message name="logErroriRequest">
+		<wsdl:part name="inMessage" type="ee:LogErroriIn" />
+		<wsdl:part name="content" type="ee:Content" />
+	</wsdl:message>
+	<wsdl:message name="statisticheElaborazioniAsAttachmentRequest">
+		<wsdl:part name="inMessage" type="ee:StatisticheElaborazioniInAsAttachments" />
+		<wsdl:part name="content" type="ee:Content" />
+	</wsdl:message>
+	<wsdl:message name="statisticheScartiAsAttachmentResponse">
+		<wsdl:part name="statisticheScartiAsAttachmentReturn" type="ee:StatisticheScartiOutAsAttachment" />
+		<wsdl:part name="content" type="ee:Content" />
+	</wsdl:message>
+	<wsdl:portType name="EsitoElaborazione">
+		<wsdl:operation name="statisticheElaborazioniAsAttachment">
+			<wsdl:input message="ws:statisticheElaborazioniAsAttachmentRequest" name="statisticheElaborazioniAsAttachmentRequest" />
+			<wsdl:output message="ws:statisticheElaborazioniAsAttachmentResponse" name="statisticheElaborazioniAsAttachmentResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="esitoAnagraficaRiferimento">
+			<wsdl:input message="ws:esitoAnagraficaRiferimentoRequest" name="esitoAnagraficaRiferimentoRequest" />
+			<wsdl:output message="ws:esitoAnagraficaRiferimentoResponse" name="esitoAnagraficaRiferimentoResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="logErrori">
+			<wsdl:input message="ws:logErroriRequest" name="logErroriRequest" />
+			<wsdl:output message="ws:logErroriResponse" name="logErroriResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="statisticheScartiAsAttachment">
+			<wsdl:input message="ws:statisticheScartiAsAttachmentRequest" name="statisticheScartiAsAttachmentRequest" />
+			<wsdl:output message="ws:statisticheScartiAsAttachmentResponse" name="statisticheScartiAsAttachmentResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<wsdl:message name="datiContestoPerTipologiaResponse">
+		<wsdl:part name="datiContestoPerTipologiaReturn" type="t:DatiContestoPerTipologiaOut" />
+		<wsdl:part name="content" type="t:Content" />
+	</wsdl:message>
+	<wsdl:message name="allDatiContestoResponse">
+		<wsdl:part name="allDatiContestoReturn" type="t:AllDatiContestoOut" />
+		<wsdl:part name="content" type="t:Content" />
+	</wsdl:message>
+	<wsdl:message name="datiContestoPerTipologiaRequest">
+		<wsdl:part name="inMessage" type="t:DatiContestoPerTipologiaIn" />
+		<wsdl:part name="content" type="t:Content" />
+	</wsdl:message>
+	<wsdl:message name="allDatiContestoRequest">
+		<wsdl:part name="inMessage" type="t:AllDatiContestoIn" />
+		<wsdl:part name="content" type="t:Content" />
+	</wsdl:message>
+	<wsdl:portType name="Tipologie">
+		<wsdl:operation name="allDatiContesto">
+			<wsdl:input message="ws:allDatiContestoRequest" name="allDatiContestoRequest" />
+			<wsdl:output message="ws:allDatiContestoResponse" name="allDatiContestoResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="datiContestoPerTipologia">
+			<wsdl:input message="ws:datiContestoPerTipologiaRequest" name="datiContestoPerTipologiaRequest" />
+			<wsdl:output message="ws:datiContestoPerTipologiaResponse" name="datiContestoPerTipologiaResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+
+
+
+	<wsdl:message name="prenotazioneTrasmissioneRequest">
+		<wsdl:part name="inMessage" type="tr:PrenotazioneTrasmissioneIn" />
+	</wsdl:message>
+	<wsdl:message name="assegnazioneCodProcAttRequest">
+		<wsdl:part name="inMessage" type="tr:AssegnazioneCodProcAttIn" />
+	</wsdl:message>
+	<wsdl:message name="prenotazioneTrasmissioneResponse">
+		<wsdl:part name="prenotazioneTrasmissioneReturn" type="tr:PrenotazioneTrasmissioneOut" />
+	</wsdl:message>
+	<wsdl:message name="inviaFileResponse">
+		<wsdl:part name="inviaFileReturn" type="tr:InviaFileOut" />
+	</wsdl:message>
+	<wsdl:message name="assegnazioneCodProcAttResponse">
+		<wsdl:part name="assegnazioneCodProcAttReturn" type="tr:AssegnazioneCodProcAttOut" />
+	</wsdl:message>
+	<wsdl:message name="inviaFileRequest">
+		<wsdl:part name="inMessage" type="tr:InviaFileIn" />
+		<wsdl:part name="content" type="tr:Content" />
+	</wsdl:message>
+	<wsdl:portType name="Trasmissione">
+		<wsdl:operation name="prenotazioneTrasmissione" parameterOrder="inMessage">
+			<wsdl:input message="ws:prenotazioneTrasmissioneRequest" name="prenotazioneTrasmissioneRequest" />
+			<wsdl:output message="ws:prenotazioneTrasmissioneResponse" name="prenotazioneTrasmissioneResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="assegnazioneCodProcAtt" parameterOrder="inMessage">
+			<wsdl:input message="ws:assegnazioneCodProcAttRequest" name="assegnazioneCodProcAttRequest" />
+			<wsdl:output message="ws:assegnazioneCodProcAttResponse" name="assegnazioneCodProcAttResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="inviaFile">
+			<wsdl:input message="ws:inviaFileRequest" name="inviaFileRequest" />
+			<wsdl:output message="ws:inviaFileResponse" name="inviaFileResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+
+
+
+	<wsdl:message name="richiestaResponse">
+		<wsdl:part name="richiestaReturn" type="ro:RichiestaOut" />
+	</wsdl:message>
+	<wsdl:message name="richiestaRequest">
+		<wsdl:part name="inMessage" type="ro:RichiestaIn" />
+	</wsdl:message>
+	<wsdl:message name="listaTipiOperazioneResponse">
+		<wsdl:part name="listaTipiOperazioneReturn" type="ro:ListaTipiOperazioneOut" />
+	</wsdl:message>
+	<wsdl:message name="listaTipiOperazioneRequest">
+		<wsdl:part name="inMessage" type="ro:ListaTipiOperazioneIn" />
+	</wsdl:message>
+	<wsdl:portType name="RichiestaOperazione">
+		<wsdl:operation name="listaTipiOperazione" parameterOrder="inMessage">
+			<wsdl:input message="ws:listaTipiOperazioneRequest" name="listaTipiOperazioneRequest" />
+			<wsdl:output message="ws:listaTipiOperazioneResponse" name="listaTipiOperazioneResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="richiesta" parameterOrder="inMessage">
+			<wsdl:input message="ws:richiestaRequest" name="richiestaRequest" />
+			<wsdl:output message="ws:richiestaResponse" name="richiestaResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+</wsdl:definitions>

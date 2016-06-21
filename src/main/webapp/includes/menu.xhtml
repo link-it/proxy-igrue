@@ -1,0 +1,40 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+	<a4j:form>
+		<rich:panel style="padding:0; border-top: 2px solid; border-color: #BED6F8;" styleClass="noborder" headerClass="outpanelHeader" rendered="#{loginBean.isLoggedIn}">
+			 
+			<rich:panelMenu expandMode="none" mode="server">
+				<rich:panelMenuGroup label="Trasmissioni" expanded="true">
+					<rich:panelMenuItem label="Lista" action="listaTrasmissioni"/>
+					<rich:panelMenuItem label="Nuova" action="trasmissioneAdd" actionListener="#{trasmissioniBean.nuovaTrasmissione}"/>
+				</rich:panelMenuGroup>
+				<rich:panelMenuGroup label="Tabelle di Contesto" expanded="true">
+					<rich:panelMenuItem label="Protocollo QSN" action="tabellaContestoList"/>
+				</rich:panelMenuGroup>
+				<rich:panelMenuGroup label="Codice Attivazione" expanded="true">
+					<rich:panelMenuItem label="Richiesta" action="richiestaCodice"/>
+				</rich:panelMenuGroup>
+				<rich:panelMenuGroup label="Eventi" expanded="true">
+					<rich:panelMenuItem label="Lista" action="eventiList"/>
+				</rich:panelMenuGroup>
+				<rich:panelMenuGroup label="Avvisi e-mail" expanded="true">
+					<rich:panelMenuItem label="Lista avvisi" action="listaAvvisi"/>
+					<rich:panelMenuItem label="Configurazione" action="configAvvisi"/>
+				</rich:panelMenuGroup>
+			</rich:panelMenu>
+		</rich:panel>
+		<rich:panel style="padding:0; border-top: 2px solid; border-color: #BED6F8;" styleClass="noborder" headerClass="outpanelHeader" rendered="#{!loginBean.isLoggedIn}">
+			 
+			<rich:panelMenu expandMode="none" mode="server">
+			<rich:panelMenuGroup label="Utenze" expanded="true">
+				<rich:panelMenuItem label="Login" action="login"/>
+				<rich:panelMenuItem label="Crea Utenza" action="nuovaUtenza" actionListener="#{utentiBean.nuovoUtente}" />
+			</rich:panelMenuGroup>
+			</rich:panelMenu>
+		</rich:panel>
+	</a4j:form>
+</ui:composition>

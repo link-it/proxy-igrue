@@ -1,0 +1,60 @@
+<!-- IGRUE Creazione Utente PAGE -->
+<ui:composition template="/templates/form.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" xmlns:link="http://www.link.it">
+
+	<ui:define name="body">
+	<style>
+#breadcrumb-ct {
+display: none;
+}
+</style>
+
+		<h:form>
+
+			<link:fieldset legend="Informazioni Utenza" rendered="#{true}" collapsible="false" closed="false"> 
+
+				<link:prop label="Id Amministrazione" required="true">
+					<h:inputText id="idAmministrazione"
+						value="#{utentiBean.utente.idAmministrazione}"
+						style="width: 412px">
+					</h:inputText>
+				</link:prop>
+				<link:prop label="Id Sistema" required="true">
+					<h:inputText id="idSistema" value="#{utentiBean.utente.idSistema}" validatorMessage="Inserire un valore numerico."
+						style="width: 412px">
+					</h:inputText>
+				</link:prop>
+				<link:prop label="Password" required="true">
+					<h:inputSecret id="pwd" value="#{utentiBean.utente.password}"
+						style="width: 412px">
+					</h:inputSecret>
+				</link:prop>
+				<link:prop label="Password MEF" required="false">
+					<h:inputSecret id="pwdMEF" value="#{utentiBean.utente.mefPassword}"
+						style="width: 412px">
+					</h:inputSecret>
+				</link:prop>
+
+				<rich:spacer height="4" />
+
+				<link:prop label="Password Amministratore" required="true">
+					<h:inputSecret id="pwdAdmin" value="#{utentiBean.pwdAdmin}"
+						style="width: 412px">
+					</h:inputSecret>
+				</link:prop>
+
+				<div class="buttonrow">
+				<h:commandButton action="#{utentiBean.salva}" value="Aggiungi"  styleClass="icon-save positive"/>
+				</div>
+			</link:fieldset>
+
+			
+		</h:form>
+
+	</ui:define>
+</ui:composition>

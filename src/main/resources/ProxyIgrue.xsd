@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns="http://igrue.proxy.govmix.org/web/ejb" targetNamespace="http://igrue.proxy.govmix.org/web/ejb"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+	attributeFormDefault="unqualified">
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<linkit:project_generator xmlns:linkit="http://www.link.it/project_generator">
+				<linkit:info version="igrue_1" nome-progetto="ProxyIgrue">
+					<linkit:authors>
+						<linkit:author name="Giovanni Bussu" mail="bussu@link.it"/>
+					</linkit:authors>
+				</linkit:info>
+				<linkit:jax-ws xml-annotations="false" ws="false"/>
+			</linkit:project_generator>
+			<linkit_dao:generator xmlns:linkit_dao="http://www.link.it/project_generator/dao">
+				<linkit_dao:dao partial-update="false">
+					<linkit_dao:xml generate="false" root-element="proxy"/>
+                         <linkit_dao:jdbc generate="true"/>
+                         <linkit_dao:jpa generate="false"/>
+					<linkit_dao:sql>
+						<linkit_dao:sql-script generate="true">
+							<linkit_dao:sql-table-list>
+								<linkit_dao:sql-table object-name="utente" object-type="utente"/>
+								<linkit_dao:sql-table object-name="tabellacontesto" object-type="tabellacontesto"/>
+								<linkit_dao:sql-table object-name="trasmissione" object-type="trasmissione"/>
+								<linkit_dao:sql-table object-name="ticket" object-type="ticket"/>
+								<linkit_dao:sql-table object-name="esito" object-type="esito"/>
+								<linkit_dao:sql-table object-name="evento" object-type="evento"/>
+								<linkit_dao:sql-table object-name="tipievento" object-type="tipievento"/>
+								<linkit_dao:sql-table object-name="proprieta-evento" object-type="proprieta-evento"/>
+								<linkit_dao:sql-table object-name="mail-template" object-type="mail-template"/>
+								<linkit_dao:sql-table object-name="mail-trace" object-type="mail-trace"/>
+							</linkit_dao:sql-table-list>
+						</linkit_dao:sql-script>
+						<linkit_dao:sql-mapping single-table-mapping="false" on-delete-cascade="true" />
+					</linkit_dao:sql>
+				</linkit_dao:dao>
+			</linkit_dao:generator>
+		</xsd:appinfo>
+	</xsd:annotation>
+
+
+
+
+
+	<!-- ************ XML ROOT ******************** -->
+
+	<xsd:element name="proxy">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="utente" minOccurs="0" maxOccurs="unbounded"/>
+				<xsd:element ref="trasmissione" minOccurs="0" maxOccurs="unbounded"/>
+				<xsd:element ref="ticket" minOccurs="0" maxOccurs="unbounded"/>
+				<xsd:element ref="esito" minOccurs="0" maxOccurs="unbounded"/>
+				<xsd:element ref="evento" minOccurs="0" maxOccurs="unbounded"/>
+				<xsd:element ref="proprieta-evento" minOccurs="0" maxOccurs="unbounded"/>
+				<xsd:element ref="tipievento" minOccurs="0" maxOccurs="unbounded"/>
+				<xsd:element ref="tabellacontesto" minOccurs="0" maxOccurs="unbounded"/>
+				<xsd:element ref="mail-template" minOccurs="0" maxOccurs="unbounded"/>
+				<xsd:element ref="mail-trace" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+
+	<xsd:element name="utente">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<linkit_dao:generator xmlns:linkit_dao="http://www.link.it/project_generator/dao">
+					<linkit_dao:interface crud="true" id="id-utente"/>
+					<linkit_dao:sql-table-mapping name="utenti">
+						<linkit_dao:sql-table-primary-key generate-id="false">
+							<linkit_dao:sql-table-pk-field name="id_amministrazione"/>
+							<linkit_dao:sql-table-pk-field name="id_sistema"/>
+						</linkit_dao:sql-table-primary-key>
+					</linkit_dao:sql-table-mapping>
+				</linkit_dao:generator>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="id_amministrazione" type="xsd:string"/>
+				<xsd:element name="id_sistema" type="xsd:integer"/>
+				<xsd:element name="password" type="xsd:string"/>
+				<xsd:element name="sil" type="xsd:string" minOccurs="0"/>
+				<xsd:element name="mef_password" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+
+
+	<xsd:element name="esito">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<linkit_dao:generator xmlns:linkit_dao="http://www.link.it/project_generator/dao">
+					<linkit_dao:interface crud="true" id="id-esito"/>
+					<linkit_dao:sql-table-mapping name="esiti" on-delete-cascade="true">
+						<linkit_dao:sql-table-primary-key generate-id="false">
+							<linkit_dao:sql-table-pk-column name="file"/>
+							<linkit_dao:sql-table-pk-column name="id_amministrazione"/>
+							<linkit_dao:sql-table-pk-column name="id_sistema"/>
+						</linkit_dao:sql-table-primary-key>
+						<linkit_dao:sql-table-foreign-key
+							reference-object-name="ticket"
+							reference-object-type="ticket"
+							reference-primary-key="true">
+							<linkit_dao:sql-table-fk-column name="file"/>
+							<linkit_dao:sql-table-fk-column name="id_amministrazione"/>
+							<linkit_dao:sql-table-fk-column name="id_sistema"/>
+						</linkit_dao:sql-table-foreign-key>
+						
+					</linkit_dao:sql-table-mapping>
+				</linkit_dao:generator>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="ticket" type="ticket-id" minOccurs="1" maxOccurs="1">
+					<xsd:annotation>
+						<xsd:appinfo>
+							<linkit_dao:generator xmlns:linkit_dao="http://www.link.it/project_generator/dao">
+								<linkit_dao:sql-id-mapping relationship="none" object-name="ticket" object-type="ticket-id"/>
+							</linkit_dao:generator>
+						</xsd:appinfo>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="id_amministrazione" type="xsd:string"/>
+				<xsd:element name="id_sistema" type="xsd:integer"/>
+				<xsd:element name="file" type="xsd:integer"/>
+				<xsd:element name="statisticheelaborazioni" type="xsd:integer" minOccurs="0"/>
+				<xsd:element name="statisticheelaborazionidescrizione" type="xsd:string" minOccurs="0"/>
+				<xsd:element name="statistichescarti" type="xsd:integer" minOccurs="0"/>
+				<xsd:element name="statistichescartidescrizione" type="xsd:string" minOccurs="0"/>
+				<xsd:element name="esitoelaborazioneperanagraficadiriferimento" type="xsd:integer" minOccurs="0"/>
+				<xsd:element name="esitoelaborazioneperanagraficadiriferimentodescrizione" type="xsd:string" minOccurs="0"/>
+				<xsd:element name="logdeglierrori" type="xsd:integer" minOccurs="0"/>
+				<xsd:element name="logdeglierroridescrizione" type="xsd:string" minOccurs="0"/>
+				<xsd:element name="logdeglierroriricevuto" type="xsd:boolean" minOccurs="0"/>
+				<xsd:element name="dataultimocontrollo" type="xsd:dateTime" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="evento">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<linkit_dao:generator xmlns:linkit_dao="http://www.link.it/project_generator/dao">
+					<linkit_dao:interface crud="true"/>
+					<linkit_dao:sql-table-mapping name="eventi" on-delete-cascade="true">
+						<linkit_dao:sql-table-primary-key generate-id="false">
+							<linkit_dao:sql-table-pk-field name="event_id"/>
+						</linkit_dao:sql-table-primary-key>
+					</linkit_dao:sql-table-mapping>
+				</linkit_dao:generator>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="enddate" type="xsd:dateTime" minOccurs="0"/>
+				<xsd:element name="eventtype_code" type="xsd:integer" minOccurs="0"/>
+				<xsd:element name="eventtype_description" type="xsd:string" minOccurs="0"/>
+				<xsd:element name="event_id" type="xsd:integer">
+					<xsd:annotation>
+						<xsd:appinfo>
+							<linkit_dao:generator
+								xmlns:linkit_dao="http://www.link.it/project_generator/dao">
+								<linkit_dao:sql-column-mapping name="id"/>
+							</linkit_dao:generator>
+						</xsd:appinfo>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="owner_description" type="xsd:string" minOccurs="0"/>
+				<xsd:element name="owner_idamministrazione" type="xsd:string"/>
+				<xsd:element name="owner_idsistema" type="xsd:integer"/>
+				<xsd:element name="parameterid" type="xsd:string" minOccurs="0"/>
+				<xsd:element name="reason" type="xsd:string" minOccurs="0"/>
+				<xsd:element name="startdate" type="xsd:dateTime" minOccurs="0"/>
+				<xsd:element name="ticket-id" type="ticket-id" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="mail-template">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<linkit_dao:generator xmlns:linkit_dao="http://www.link.it/project_generator/dao">
+					<linkit_dao:interface crud="true" id="mail-template-id"/>
+					<linkit_dao:sql-table-mapping name="mail_template" on-delete-cascade="true">
+						<linkit_dao:sql-table-primary-key generate-id="false">
+							<linkit_dao:sql-table-pk-column name="template_code"/>
+							<linkit_dao:sql-table-pk-column name="id_amministrazione"/>
+							<linkit_dao:sql-table-pk-column name="id_sistema"/>
+						</linkit_dao:sql-table-primary-key>
+					</linkit_dao:sql-table-mapping>
+					<linkit_dao:sql-table-foreign-key
+						reference-object-name="utente"
+						reference-object-type="utente"
+						reference-primary-key="true">
+						<linkit_dao:sql-table-fk-column name="id_amministrazione"/>
+						<linkit_dao:sql-table-fk-column name="id_sistema"/>
+					</linkit_dao:sql-table-foreign-key>
+					
+				</linkit_dao:generator>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="template_code" type="xsd:string"/>
+				<xsd:element name="id_amministrazione" type="xsd:string"/>
+				<xsd:element name="id_sistema" type="xsd:integer"/>
+				<xsd:element name="mail_oggetto" type="xsd:string" minOccurs="0"/>
+				<xsd:element name="template_txt" type="xsd:string" minOccurs="0"/>
+				<xsd:element name="last_send" type="xsd:string" minOccurs="0"/>
+				<xsd:element name="flag_send_sn" type="xsd:boolean" minOccurs="0"/>
+				<xsd:element name="mail_mittente" type="xsd:string" minOccurs="0"/>
+				<xsd:element name="mail_destinatario" type="xsd:string" minOccurs="0"/>
+				<xsd:element name="mail_cc" type="xsd:string" minOccurs="0"/>
+				<xsd:element name="utente" type="id-utente" minOccurs="1" maxOccurs="1">
+					<xsd:annotation>
+						<xsd:appinfo>
+							<linkit_dao:generator xmlns:linkit_dao="http://www.link.it/project_generator/dao">
+								<linkit_dao:sql-id-mapping relationship="none" object-name="utente" object-type="id-utente"/>
+							</linkit_dao:generator>
+						</xsd:appinfo>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	
+	<xsd:element name="proprieta-evento">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<linkit_dao:generator xmlns:linkit_dao="http://www.link.it/project_generator/dao">
+					<linkit_dao:interface crud="true" id="proprieta-eventi-id"/>
+					<linkit_dao:sql-table-mapping name="proprieta_eventi"
+						on-delete-cascade="true"> 
+						<linkit_dao:sql-table-primary-key generate-id="false">
+							<linkit_dao:sql-table-pk-field name="property_key"/>
+							<linkit_dao:sql-table-pk-field name="property_id"/>
+						</linkit_dao:sql-table-primary-key>
+					</linkit_dao:sql-table-mapping>
+				</linkit_dao:generator>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="property_id" type="xsd:string">
+					 <xsd:annotation>
+                         <xsd:appinfo>
+                              <linkit_dao:generator
+                                   xmlns:linkit_dao="http://www.link.it/project_generator/dao">
+                                   <linkit_dao:sql-column-mapping name="id"/>
+                              </linkit_dao:generator>
+                         </xsd:appinfo>
+                    </xsd:annotation>
+				</xsd:element>
+				<xsd:element name="property_key" type="xsd:string"/>
+				<xsd:element name="property_value" type="xsd:string" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="tabellacontesto">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<linkit_dao:generator xmlns:linkit_dao="http://www.link.it/project_generator/dao">
+					<linkit_dao:interface crud="true" id="id-tabellacontesto"/>
+					<linkit_dao:sql-table-mapping name="tabellecontesto" on-delete-cascade="true">
+						<linkit_dao:sql-table-primary-key generate-id="false">
+							<linkit_dao:sql-table-pk-column name="nometabella"/>
+							<linkit_dao:sql-table-pk-column name="id_amministrazione"/>
+							<linkit_dao:sql-table-pk-column name="id_sistema"/>
+						</linkit_dao:sql-table-primary-key>
+						<linkit_dao:sql-table-foreign-key
+							reference-object-name="utente"
+							reference-object-type="utente"
+							reference-primary-key="true">
+							<linkit_dao:sql-table-fk-column name="id_amministrazione"/>
+							<linkit_dao:sql-table-fk-column name="id_sistema"/>
+						</linkit_dao:sql-table-foreign-key>
+					</linkit_dao:sql-table-mapping>
+				</linkit_dao:generator>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="utente" type="id-utente" minOccurs="1" maxOccurs="1">
+					<xsd:annotation>
+						<xsd:appinfo>
+							<linkit_dao:generator xmlns:linkit_dao="http://www.link.it/project_generator/dao">
+								<linkit_dao:sql-id-mapping relationship="none" object-name="utente" object-type="id-utente"/>
+							</linkit_dao:generator>
+						</xsd:appinfo>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="id_amministrazione" type="xsd:string"/>
+				<xsd:element name="id_sistema" type="xsd:integer"/>
+				<xsd:element name="checksum" type="xsd:long" minOccurs="0"/>
+				<xsd:element name="dataaggiornamento" type="xsd:dateTime" minOccurs="0"/>
+				<xsd:element name="nometabella" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="ticket">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<linkit_dao:generator xmlns:linkit_dao="http://www.link.it/project_generator/dao">
+					<linkit_dao:interface crud="true" id="ticket-id"/>
+					<linkit_dao:sql-table-mapping name="tickets" on-delete-cascade="true">
+						<linkit_dao:sql-table-primary-key generate-id="false">
+							<linkit_dao:sql-table-pk-column name="file"/>
+							<linkit_dao:sql-table-pk-column name="id_amministrazione"/>
+							<linkit_dao:sql-table-pk-column name="id_sistema"/>
+						</linkit_dao:sql-table-primary-key>
+						<linkit_dao:sql-table-foreign-key
+							reference-object-name="trasmissione"
+							reference-object-type="trasmissione"
+							reference-primary-key="true">
+							<linkit_dao:sql-table-fk-column name="file"/>
+							<linkit_dao:sql-table-fk-column name="id_amministrazione"/>
+							<linkit_dao:sql-table-fk-column name="id_sistema"/>
+						</linkit_dao:sql-table-foreign-key>
+						
+					</linkit_dao:sql-table-mapping>
+				</linkit_dao:generator>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="trasmissione" type="id-trasmissione" minOccurs="1" maxOccurs="1">
+					<xsd:annotation>
+						<xsd:appinfo>
+							<linkit_dao:generator xmlns:linkit_dao="http://www.link.it/project_generator/dao">
+								<linkit_dao:sql-id-mapping relationship="none" object-name="trasmissione" object-type="id-trasmissione"/>
+							</linkit_dao:generator>
+						</xsd:appinfo>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="file" type="xsd:integer"/>
+				<xsd:element name="id_amministrazione" type="xsd:string"/>
+				<xsd:element name="id_sistema" type="xsd:integer"/>
+				<xsd:element name="dataassegnazione" type="xsd:dateTime" minOccurs="0"/>
+				<xsd:element name="datafinetrasmissione" type="xsd:dateTime" minOccurs="0"/>
+				<xsd:element name="filericevuto" type="xsd:boolean" minOccurs="0"/>
+				<xsd:element name="idticket" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="tipievento">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<linkit_dao:generator xmlns:linkit_dao="http://www.link.it/project_generator/dao">
+					<linkit_dao:interface crud="true" />
+					<linkit_dao:sql-table-mapping name="tipievento" on-delete-cascade="true">
+						<linkit_dao:sql-table-primary-key generate-id="false">
+							<linkit_dao:sql-table-pk-field name="code"/>
+						</linkit_dao:sql-table-primary-key>
+					</linkit_dao:sql-table-mapping>
+				</linkit_dao:generator>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="code" type="xsd:integer"/>
+				<xsd:element name="description" type="xsd:string" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="trasmissione">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<linkit_dao:generator xmlns:linkit_dao="http://www.link.it/project_generator/dao">
+					<linkit_dao:interface crud="true" id="id-trasmissione"/>
+					<linkit_dao:sql-table-mapping name="trasmissioni" on-delete-cascade="true">
+						<linkit_dao:sql-table-primary-key generate-id="false">
+							<linkit_dao:sql-table-pk-column name="file"/>
+							<linkit_dao:sql-table-pk-column name="id_amministrazione"/>
+							<linkit_dao:sql-table-pk-column name="id_sistema"/>
+						</linkit_dao:sql-table-primary-key>
+						<linkit_dao:sql-table-foreign-key
+							reference-object-name="utente"
+							reference-object-type="utente"
+							reference-primary-key="true">
+							<linkit_dao:sql-table-fk-column name="id_amministrazione"/>
+							<linkit_dao:sql-table-fk-column name="id_sistema"/>
+						</linkit_dao:sql-table-foreign-key>
+					</linkit_dao:sql-table-mapping>
+				</linkit_dao:generator>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="utente" type="id-utente" minOccurs="1" maxOccurs="1">
+					<xsd:annotation>
+						<xsd:appinfo>
+							<linkit_dao:generator xmlns:linkit_dao="http://www.link.it/project_generator/dao">
+								<linkit_dao:sql-id-mapping relationship="none" object-name="id-utente" object-type="id-utente"/>
+							</linkit_dao:generator>
+						</xsd:appinfo>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="file" type="xsd:integer"/>
+				<xsd:element name="id_amministrazione" type="xsd:string"/>
+				<xsd:element name="id_sistema" type="xsd:integer"/>
+				<xsd:element name="dataultimoinvio" type="xsd:dateTime" minOccurs="0"/>
+				<xsd:element name="esitoultimoinvio" type="xsd:integer" minOccurs="0"/>
+				<xsd:element name="esitoultimoinviodescrizione" type="xsd:string" minOccurs="0"/>
+				<xsd:element name="notificato" type="xsd:boolean" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="mail-trace">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<linkit_dao:generator xmlns:linkit_dao="http://www.link.it/project_generator/dao">
+					<linkit_dao:interface crud="true" id="mail-trace-id"/>
+					<linkit_dao:sql-table-mapping name="mail_trace" on-delete-cascade="true">
+						<linkit_dao:sql-table-primary-key generate-id="false">
+							<linkit_dao:sql-table-pk-column name="template_code"/>
+							<linkit_dao:sql-table-pk-column name="id_amministrazione"/>
+							<linkit_dao:sql-table-pk-column name="id_sistema"/>
+							<linkit_dao:sql-table-pk-column name="subject"/>
+							<linkit_dao:sql-table-pk-column name="content"/>
+							<linkit_dao:sql-table-pk-column name="receivers"/>
+							<linkit_dao:sql-table-pk-column name="time"/>
+						</linkit_dao:sql-table-primary-key>
+						<linkit_dao:sql-table-foreign-key
+							reference-object-name="mail-template"
+							reference-object-type="mail-template"
+							reference-primary-key="true">
+							<linkit_dao:sql-table-fk-column name="template_code"/>
+							<linkit_dao:sql-table-fk-column name="id_amministrazione"/>
+							<linkit_dao:sql-table-fk-column name="id_sistema"/>
+						</linkit_dao:sql-table-foreign-key>
+					</linkit_dao:sql-table-mapping>
+				</linkit_dao:generator>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="mail-template" type="mail-template-id" minOccurs="1" maxOccurs="1">
+					<xsd:annotation>
+						<xsd:appinfo>
+							<linkit_dao:generator xmlns:linkit_dao="http://www.link.it/project_generator/dao">
+								<linkit_dao:sql-id-mapping relationship="none" object-name="mail-template" object-type="mail-template-id"/>
+							</linkit_dao:generator>
+						</xsd:appinfo>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="template_code" type="xsd:string"/>
+				<xsd:element name="id_amministrazione" type="xsd:string"/>
+				<xsd:element name="id_sistema" type="xsd:integer"/>
+				<xsd:element name="subject" type="xsd:string"/>
+				<xsd:element name="content" type="xsd:string"/>
+				<xsd:element name="receivers" type="xsd:string"/>
+				<xsd:element name="time" type="xsd:dateTime"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	
+	<!-- ************ ID ******************** -->
+	
+	<xsd:complexType name="mail-template-id">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<linkit_dao:generator xmlns:linkit_dao="http://www.link.it/project_generator/dao">
+					<linkit_dao:sql-id-mapping relationship="none"/>
+				</linkit_dao:generator>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="template_code" type="xsd:string"/>
+			<xsd:element name="utente" type="id-utente"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="proprieta-eventi-id">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<linkit_dao:generator xmlns:linkit_dao="http://www.link.it/project_generator/dao">
+					<linkit_dao:sql-id-mapping relationship="none"/>
+				</linkit_dao:generator>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="property-id" type="xsd:string"/>
+			<xsd:element name="property-key" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="mail-trace-id">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<linkit_dao:generator xmlns:linkit_dao="http://www.link.it/project_generator/dao">
+					<linkit_dao:sql-id-mapping relationship="none"/>
+				</linkit_dao:generator>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="template-id" type="mail-template-id"/>
+			<xsd:element name="subject" type="xsd:string"/>
+			<xsd:element name="content" type="xsd:string"/>
+			<xsd:element name="receivers" type="xsd:string"/>
+			<xsd:element name="time" type="xsd:dateTime"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="ticket-id">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<linkit_dao:generator xmlns:linkit_dao="http://www.link.it/project_generator/dao">
+					<linkit_dao:sql-id-mapping relationship="none"/>
+				</linkit_dao:generator>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="trasmissione" type="id-trasmissione"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="id-utente">
+		<xsd:sequence>
+			<xsd:element name="id-amministrazione" type="xsd:string"/>
+			<xsd:element name="id-sistema" type="xsd:integer"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="id-esito">
+		<xsd:sequence>
+			<xsd:element name="ticket" type="ticket-id"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="id-trasmissione">
+		<xsd:sequence>
+			<xsd:element name="file" type="xsd:integer"/>
+			<xsd:element name="utente" type="id-utente"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="id-tabellacontesto">
+		<xsd:sequence>
+			<xsd:element name="nometabella" type="xsd:string"/>
+			<xsd:element name="utente" type="id-utente"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+</xsd:schema>

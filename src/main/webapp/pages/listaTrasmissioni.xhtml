@@ -1,0 +1,75 @@
+<ui:composition template="/templates/defaultTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:link="http://www.link.it">
+
+
+	<ui:define name="navbar">
+		<ul>
+			<li>
+				<h:outputText value="/Lista Trasmissioni" />
+			</li>
+		</ul>
+	</ui:define>
+	
+	<ui:define name="body">
+		<rich:messages/>
+		<a4j:keepAlive beanName="trasmissioniBean" />
+		<h:form>
+			<link:dataTable
+				id="trasmissioniList"
+				value="#{trasmissioniDataModel}"
+				headerText="Lista Trasmissioni"
+				showSelectRemoveAll="false"
+				mBean="#{trasmissioniBean}">
+				<f:facet name="noData">
+							<h:outputText value="Nessuna Trasmissione Trovata." />
+						</f:facet>
+				
+				<rich:column width="25px">
+					<a4j:htmlCommandLink action="dettagliTrasmissione" styleClass="link-plain" ajaxSingle="true">
+						<f:setPropertyActionListener value="#{item}" target="#{trasmissioniBean.selectedElement}" />
+						<h:graphicImage value="/images/icons/silk/zoom.png" />
+						<rich:toolTip value="Mostra Dettagli"/>
+					</a4j:htmlCommandLink>
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="File" />
+					</f:facet>
+					<h:outputText value="#{item.file}" />
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="Ticket" />
+					</f:facet>
+					<h:outputText value="#{item.ticket}" />
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="Data" />
+					</f:facet>
+					<h:outputText value="#{item.dataultimoinvio}" >
+						<f:convertDateTime type="both" locale="it_IT"/>
+					</h:outputText>
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="Stato elaborazione" />
+					</f:facet>
+					<h:outputText value="#{item.stato}" />
+				</rich:column>
+			</link:dataTable>
+		</h:form>
+		
+	</ui:define>
+
+</ui:composition>

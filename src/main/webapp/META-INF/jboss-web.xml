@@ -1,0 +1,5 @@
+<jboss-web>
+   <class-loading> 
+      <loader-repository>org.govmix.proxy.igrue:archive=proxyigrue.war</loader-repository> 
+   </class-loading>
+</jboss-web> 

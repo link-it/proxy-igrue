@@ -1,0 +1,41 @@
+<datasources>
+	<no-tx-datasource>
+		<!-- OpenSPCoop Porta di Dominio -->
+		<jndi-name>${igrue.db.jndiName}</jndi-name>
+		<connection-url>${igrue.db.url}</connection-url>
+		<driver-class>org.postgresql.Driver</driver-class>
+		<user-name>${igrue.db.user}</user-name>
+		<password>${igrue.db.pwd}</password>
+
+		<!-- bing to JNDI -->
+		<use-java-context>false</use-java-context>
+
+		<!-- Transaction Isolation -->
+		<transaction-isolation>TRANSACTION_READ_UNCOMMITTED</transaction-isolation>
+		<!-- Minimo numero di connessioni che un pool deve mantenere -->
+		<min-pool-size>10</min-pool-size>
+		<!-- Massimo numero di connessioni per un pool -->
+		<max-pool-size>210</max-pool-size>
+		<!-- Massimo ammontare di minuti che una connessione puo' rimanere 'idle' 
+			prima di essere chiusa -->
+		<idle-timeout-minutes>3</idle-timeout-minutes>
+		<!-- Indica il controllo per gli statements non chiusi quando una connessione 
+			viene ritornata al pool, e result set siano chiusi quando una statement viene 
+			chiusa/ritornata alla cache della prepared statemente -->
+		<track-statements>true</track-statements>
+		<!-- Cache PreparedStatement -->
+		<prepared-statement-cache-size>3000</prepared-statement-cache-size>
+
+		<!-- sql to call when connection is created. Can be anything, select 1 
+			is valid for PostgreSQL -->
+		<new-connection-sql>select 1</new-connection-sql>
+		<!-- sql to call on an existing pooled connection when it is obtained from 
+			pool. Can be anything, select 1 is valid for PostgreSQL -->
+		<check-valid-connection-sql>select 1</check-valid-connection-sql>
+
+		<!-- corresponding type-mapping in the standardjbosscmp-jdbc.xml (optional) -->
+		<metadata>
+			<type-mapping>PostgreSQL 8.0</type-mapping>
+		</metadata>
+	</no-tx-datasource>
+</datasources>

@@ -1,0 +1,30 @@
+/** 
+ *
+ * icons 
+ *
+ */
+
+ 
+.icon-details{
+	background-image: url(../images/icons/silk/zoom.png) ! important;
+}
+.icon-edit
+{
+	background-image: url(../images/icons/silk/pencil.png) ! important;
+}
+.icon-delete{
+	background-image: url(../images/icons/silk/cross.png) ! important;
+}
+
+.icon-download{
+	background-image: url(../images/icons/silk/package_down.png) ! important;
+}
+
+.icon-login{
+	background-image: url(../images/icons/silk/key.png) ! important;
+}
+
+.icon-save{
+	background-image: url(../images/icons/silk/disk.png) ! important;
+}
+/*eor*/

@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:ws="http://webservices.csp.eng.it" 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+	xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"
+	targetNamespace="http://webservices.csp.eng.it">
+	
+	<wsdl:import location="InterfacciaConcettuale.wsdl" namespace="http://webservices.csp.eng.it"/>
+	
+	<wsdl:binding name="EsitoElaborazioneSoapBinding" type="ws:EsitoElaborazione">
+		<wsaw:UsingAddressing wsdl:required="false" />
+		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="statisticheElaborazioniAsAttachment">
+			<soap:operation soapAction="statisticheElaborazioniAsAttachment" />
+			<wsdl:input name="statisticheElaborazioniAsAttachmentRequest">
+				<mime:multipartRelated>
+					<mime:part>
+						<soap:body namespace="http://webservices.csp.eng.it" use="literal" />
+					</mime:part>
+					<mime:part>
+						<mime:content part="content" type="application/zip" />
+					</mime:part>
+				</mime:multipartRelated>
+			</wsdl:input>
+			<wsdl:output name="statisticheElaborazioniAsAttachmentResponse">
+				<mime:multipartRelated>
+					<mime:part>
+						<soap:body namespace="http://webservices.csp.eng.it" use="literal" />
+					</mime:part>
+					<mime:part>
+						<mime:content part="content" type="application/zip" />
+					</mime:part>
+				</mime:multipartRelated>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="esitoAnagraficaRiferimento">
+			<soap:operation soapAction="esitoAnagraficaRiferimento" />
+			<wsdl:input name="esitoAnagraficaRiferimentoRequest">
+				<mime:multipartRelated>
+					<mime:part>
+						<soap:body namespace="http://webservices.csp.eng.it" use="literal" />
+					</mime:part>
+					<mime:part>
+						<mime:content part="content" type="application/zip" />
+					</mime:part>
+				</mime:multipartRelated>
+			</wsdl:input>
+			<wsdl:output name="esitoAnagraficaRiferimentoResponse">
+				<mime:multipartRelated>
+					<mime:part>
+						<soap:body namespace="http://webservices.csp.eng.it" use="literal" />
+					</mime:part>
+					<mime:part>
+						<mime:content part="content" type="application/zip" />
+					</mime:part>
+				</mime:multipartRelated>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="logErrori">
+			<soap:operation soapAction="logErrori" />
+			<wsdl:input name="logErroriRequest">
+				<mime:multipartRelated>
+					<mime:part>
+						<soap:body namespace="http://webservices.csp.eng.it" use="literal" />
+					</mime:part>
+					<mime:part>
+						<mime:content part="content" type="application/zip" />
+					</mime:part>
+				</mime:multipartRelated>
+			</wsdl:input>
+			<wsdl:output name="logErroriResponse">
+				<mime:multipartRelated>
+					<mime:part>
+						<soap:body namespace="http://webservices.csp.eng.it" use="literal" />
+					</mime:part>
+					<mime:part>
+						<mime:content part="content" type="application/zip" />
+					</mime:part>
+				</mime:multipartRelated>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="statisticheScartiAsAttachment">
+			<soap:operation soapAction="statisticheScartiAsAttachment" />
+			<wsdl:input name="statisticheScartiAsAttachmentRequest">
+				<mime:multipartRelated>
+					<mime:part>
+						<soap:body namespace="http://webservices.csp.eng.it" use="literal" />
+					</mime:part>
+					<mime:part>
+						<mime:content part="content" type="application/zip" />
+					</mime:part>
+				</mime:multipartRelated>
+			</wsdl:input>
+			<wsdl:output name="statisticheScartiAsAttachmentResponse">
+				<mime:multipartRelated>
+					<mime:part>
+						<soap:body namespace="http://webservices.csp.eng.it" use="literal" />
+					</mime:part>
+					<mime:part>
+						<mime:content part="content" type="application/zip" />
+					</mime:part>
+				</mime:multipartRelated>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="EsitoElaborazioneSoapBindingQSService">
+		<wsdl:port binding="ws:EsitoElaborazioneSoapBinding" name="EsitoElaborazioneSoapBindingQSPort">
+			<soap:address
+				location="https://MinisteroEconomiaFinanze.spcoop.gov.it/openspcoop/PA/MEF/IGRUE_COLLOQUIOSISTEMILOCALI_ESITOELABORAZIONE_1" />
+		</wsdl:port>
+	</wsdl:service>
+	
+	<wsdl:binding name="GestioneEventiSoapBinding" type="ws:GestioneEventi">
+		<wsaw:UsingAddressing wsdl:required="false" />
+		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="listaTipi">
+			<soap:operation soapAction="listaTipi" />
+			<wsdl:input name="listaTipiRequest">
+				<soap:body namespace="http://webservices.csp.eng.it" use="literal" />
+			</wsdl:input>
+			<wsdl:output name="listaTipiResponse">
+				<soap:body namespace="http://webservices.csp.eng.it" use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="lista">
+			<soap:operation soapAction="lista" />
+			<wsdl:input name="listaRequest">
+				<soap:body namespace="http://webservices.csp.eng.it" use="literal" />
+			</wsdl:input>
+			<wsdl:output name="listaResponse">
+				<soap:body namespace="http://webservices.csp.eng.it" use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="cancella">
+			<soap:operation soapAction="cancella" />
+			<wsdl:input name="cancellaRequest">
+				<soap:body namespace="http://webservices.csp.eng.it" use="literal" />
+			</wsdl:input>
+			<wsdl:output name="cancellaResponse">
+				<soap:body namespace="http://webservices.csp.eng.it" use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="GestioneEventiSoapBindingQSService">
+		<wsdl:port binding="ws:GestioneEventiSoapBinding" name="GestioneEventiSoapBindingQSPort">
+			<soap:address
+				location="https://ministeroeconomiafinanze.spcoop.gov.it/openspcoop/PA/MEF/IGRUE_COLLOQUIOSISTEMILOCALI_GESTIONEEVENTI_1" />
+		</wsdl:port>
+	</wsdl:service>
+	
+	
+	
+	<wsdl:binding name="TipologieSoapBinding" type="ws:Tipologie">
+		<wsaw:UsingAddressing wsdl:required="false" />
+		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="allDatiContesto">
+			<soap:operation soapAction="allDatiContesto" />
+			<wsdl:input name="allDatiContestoRequest">
+				<mime:multipartRelated>
+					<mime:part>
+						<soap:body namespace="http://webservices.csp.eng.it" use="literal" />
+					</mime:part>
+					<mime:part>
+						<mime:content part="content" type="application/zip" />
+					</mime:part>
+				</mime:multipartRelated>
+			</wsdl:input>
+			<wsdl:output name="allDatiContestoResponse">
+				<mime:multipartRelated>
+					<mime:part>
+						<soap:body namespace="http://webservices.csp.eng.it" use="literal" />
+					</mime:part>
+					<mime:part>
+						<mime:content part="content" type="application/zip" />
+					</mime:part>
+				</mime:multipartRelated>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="datiContestoPerTipologia">
+			<soap:operation soapAction="datiContestoPerTipologia" />
+			<wsdl:input name="datiContestoPerTipologiaRequest">
+				<mime:multipartRelated>
+					<mime:part>
+						<soap:body namespace="http://webservices.csp.eng.it" use="literal" />
+					</mime:part>
+					<mime:part>
+						<mime:content part="content" type="application/zip" />
+					</mime:part>
+				</mime:multipartRelated>
+			</wsdl:input>
+			<wsdl:output name="datiContestoPerTipologiaResponse">
+				<mime:multipartRelated>
+					<mime:part>
+						<soap:body namespace="http://webservices.csp.eng.it" use="literal" />
+					</mime:part>
+					<mime:part>
+						<mime:content part="content" type="application/zip" />
+					</mime:part>
+				</mime:multipartRelated>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="TipologieSoapBindingQSService">
+		<wsdl:port binding="ws:TipologieSoapBinding" name="TipologieSoapBindingQSPort">
+			<soap:address
+				location="https://MinisteroEconomiaFinanze.spcoop.gov.it/openspcoop/PA/MEF/IGRUE_COLLOQUIOSISTEMILOCALI_TIPOLOGIE_1" />
+		</wsdl:port>
+	</wsdl:service>
+	
+	
+	<wsdl:binding name="TrasmissioneSoapBinding" type="ws:Trasmissione">
+		<wsaw:UsingAddressing xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"
+			xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" wsdl:required="false" />
+		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="prenotazioneTrasmissione">
+			<soap:operation soapAction="prenotazioneTrasmissione" />
+			<wsdl:input name="prenotazioneTrasmissioneRequest">
+				<soap:body namespace="http://webservices.csp.eng.it" use="literal" />
+			</wsdl:input>
+			<wsdl:output name="prenotazioneTrasmissioneResponse">
+				<soap:body namespace="http://webservices.csp.eng.it" use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="assegnazioneCodProcAtt">
+			<soap:operation soapAction="assegnazioneCodProcAtt" />
+			<wsdl:input name="assegnazioneCodProcAttRequest">
+				<soap:body namespace="http://webservices.csp.eng.it" use="literal" />
+			</wsdl:input>
+			<wsdl:output name="assegnazioneCodProcAttResponse">
+				<soap:body namespace="http://webservices.csp.eng.it" use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="inviaFile">
+			<soap:operation soapAction="inviaFile" />
+			<wsdl:input name="inviaFileRequest">
+				<mime:multipartRelated>
+					<mime:part>
+						<soap:body namespace="http://webservices.csp.eng.it" use="literal" />
+					</mime:part>
+					<mime:part>
+						<mime:content part="content" type="application/zip" />
+					</mime:part>
+				</mime:multipartRelated>
+			</wsdl:input>
+			<wsdl:output name="inviaFileResponse">
+				<soap:body namespace="http://webservices.csp.eng.it" use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="TrasmissioneSoapBindingQSService">
+		<wsdl:port binding="ws:TrasmissioneSoapBinding" name="TrasmissioneSoapBindingQSPort">
+			<soap:address
+				location="https://MinisteroEconomiaFinanze.spcoop.gov.it/openspcoop/PA/MEF/IGRUE_COLLOQUIOSISTEMILOCALI_TRASMISSIONE_1" />
+		</wsdl:port>
+	</wsdl:service>
+	
+	
+	
+	<wsdl:binding name="RichiestaOperazioneSoapBinding" type="ws:RichiestaOperazione">
+		<wsaw:UsingAddressing wsdl:required="false" />
+		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="listaTipiOperazione">
+			<soap:operation soapAction="listaTipiOperazione" />
+			<wsdl:input name="listaTipiOperazioneRequest">
+				<soap:body namespace="http://webservices.csp.eng.it" use="literal" />
+			</wsdl:input>
+			<wsdl:output name="listaTipiOperazioneResponse">
+				<soap:body namespace="http://webservices.csp.eng.it" use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="richiesta">
+			<soap:operation soapAction="richiesta" />
+			<wsdl:input name="richiestaRequest">
+				<soap:body namespace="http://webservices.csp.eng.it" use="literal" />
+			</wsdl:input>
+			<wsdl:output name="richiestaResponse">
+				<soap:body namespace="http://webservices.csp.eng.it" use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="RichiestaOperazioneSoapBindingQSService">
+		<wsdl:port binding="ws:RichiestaOperazioneSoapBinding" name="RichiestaOperazioneSoapBindingQSPort">
+			<soap:address
+				location="https://MinisteroEconomiaFinanze.spcoop.gov.it/openspcoop/PA/MEF/IGRUE_COLLOQUIOSISTEMILOCALI_RICHIESTAOPERAZIONE_1" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

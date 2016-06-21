@@ -1,0 +1,196 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:link="http://www.link.it">
+		<a4j:loadScript src="resource://jquery.js"/>
+		<script type="text/javascript">
+			 jQuery(document).ready(function() {
+				checkBrowser();
+			 });
+
+			 function showConfirm(name){
+				var n = jQuery("input:checkbox[id$='column_ckb']:checked").length;
+				if(n>0){
+					Richfaces.showModalPanel(name);
+				}
+				return false;
+			}
+		</script>
+		<c:if test="#{empty width}">
+			<c:set var="width" value="100%"/>
+		</c:if>
+		<a4j:outputPanel id="#{id}">
+			<rich:datascroller for="#{id}_tbl"
+						   id="#{id}_ds_top" 
+						   maxPages="10"
+						   renderIfSinglePage="true" 
+						   pagesVar="pages" 
+						   pageIndexVar="page" 
+						   reRender="#{id}_ds_down" fastControls="hide" 
+						   oncomplete="checkBrowser()">
+						   
+				<f:facet name="pages">
+					<h:panelGrid columns="3">
+						<rich:spacer width="10px"/>
+						<c:if test="#{not empty totalRows}">
+							<c:set var="_totRows" value="#{totalRows}"/>
+						</c:if>
+						<c:if test="#{empty totalRows}">
+							<c:set var="_totRows" value="#{value.rowCount}"/>
+						</c:if>
+						<c:set var="_rowsCount" value="#{(page*(_totRows lt 25 ? _totRows : 25))}"/>
+						<c:set var="_currentRowDisplayed" value="#{((page-1)*25)+1}"/>
+						<h:outputText value="[#{(_totRows gt 0) ? _currentRowDisplayed : 0} - #{ _rowsCount gt _totRows ? _totRows : _rowsCount }] su #{_totRows}" />
+						<rich:spacer width="10px"/>
+					</h:panelGrid>
+				</f:facet>
+				<f:facet name="previous">
+					<h:graphicImage id="#{id}_prev_top" value="/images/icons/silk/control_prev_blue.png" >
+						<rich:toolTip for="#{id}_prev_top">
+							<h:outputText value="Precedente" />
+						</rich:toolTip>
+					</h:graphicImage>
+				</f:facet>
+				<f:facet name="next">
+					<h:graphicImage id="#{id}_next_top" value="/images/icons/silk/control_next_blue.png" >
+						<rich:toolTip for="#{id}_next_top">
+							<h:outputText value="Successiva" />
+						</rich:toolTip>
+					</h:graphicImage>
+				</f:facet>
+				<f:facet name="last">
+					<h:graphicImage id="#{id}_last_top" value="/images/icons/silk/control_end_blue.png" >
+						<rich:toolTip for="#{id}_last_top">
+							<h:outputText value="Ultima Pagina" />
+						</rich:toolTip>
+					</h:graphicImage>
+				</f:facet>
+				<f:facet name="first">
+					<h:graphicImage id="#{id}_first_top" value="/images/icons/silk/control_start_blue.png" >
+						<rich:toolTip for="#{id}_first_top">
+							<h:outputText value="Prima Pagina" />
+						</rich:toolTip>
+					</h:graphicImage>
+				</f:facet>
+				
+				<ui:insert name="requestParams"/>
+				
+		</rich:datascroller>
+		<rich:dataTable  
+				value="#{value}"
+				var="item"		
+				rows="25" 
+				id="#{id}_tbl" 
+				onRowMouseOver="activeRow(this)" 
+				rowClasses="even,odd"
+				width="#{width}">
+				
+				<f:facet name="header">
+					<h:outputText value="#{headerText}" rendered="#{not empty headerText}"/>
+				</f:facet>
+				
+				
+				<ui:insert/>
+				
+				<c:if test="#{showSelectRemoveAll}">
+					<rich:column align="center" width="50px">
+	                    <f:facet name="header">
+	                      <h:panelGroup style="width:50px;" layout="block">
+	                         <script type="text/javascript">
+	                        //<![CDATA[
+	                            function checkAllCheckboxesInTable( inputId, state ){
+		                            if(state){
+		                            	jQuery("input:checkbox").attr("checked","on");
+		                            }else{
+		                            	jQuery("input:checkbox").removeAttr("checked");
+		                            }
+	                            }
+	                            //]]>
+	                          </script>
+	                        <h:selectBooleanCheckbox id="checkAll" title="Seleziona Tutti" onclick="checkAllCheckboxesInTable( this.id, this.checked );">
+	                        	
+	                        </h:selectBooleanCheckbox>
+	                      </h:panelGroup>
+	                    </f:facet>
+	                    <h:selectBooleanCheckbox id="column_ckb" value="#{selectionMapTarget}" disabled="false"/>
+	                  </rich:column>
+					  
+				      <f:facet name="footer">
+				      	<h:panelGroup layout="block;" style="float:right;">
+				      		<ui:insert name="footerButton"/>
+				      		<c:if test="#{empty customDelete or customDelete==false}">
+				      			<a4j:jsFunction name="deleteSelected" action="#{mBean.delete}" reRender="#{id}"/>
+				      		</c:if>
+				      		<c:if test="#{not empty customDelete and customDelete==true}">
+				      			<ui:insert name="customDelete"/>
+				      		</c:if>
+				      		<a4j:commandButton value="Elimina Selezionati" onclick="showConfirm(#{id}_'deleteConfirmation'); return false"/>
+				      	</h:panelGroup>
+						
+					  </f:facet>
+					  
+				</c:if>				
+			</rich:dataTable>
+			<rich:datascroller id="#{id}_ds_down"
+					   for="#{id}_tbl" 
+					   maxPages="15"
+					   renderIfSinglePage="false" 
+					   pagesVar="pages" 
+					   pageIndexVar="page" reRender="#{id}_ds_top" fastControls="hide">
+					   
+					<f:facet name="previous">
+						<h:graphicImage id="#{id}_ds_down_prev" value="/images/icons/silk/control_prev_blue.png" >
+							<rich:toolTip for="#{id}_ds_down_prev">
+								<h:outputText value="Precedente" />
+							</rich:toolTip>
+						</h:graphicImage>
+					</f:facet>
+					<f:facet name="next">
+						<h:graphicImage id="#{id}_ds_down_next" value="/images/icons/silk/control_next_blue.png" >
+							<rich:toolTip for="#{id}_ds_down_next">
+								<h:outputText value="Successiva" />
+							</rich:toolTip>
+						</h:graphicImage>
+					</f:facet>
+					<f:facet name="last">
+						<h:graphicImage id="#{id}_ds_down_last" value="/images/icons/silk/control_end_blue.png" >
+							<rich:toolTip for="#{id}_ds_down_last">
+								<h:outputText value="Ultima Pagina" />
+							</rich:toolTip>
+						</h:graphicImage>
+					</f:facet>
+					<f:facet name="first">
+						<h:graphicImage id="#{id}_ds_down_first" value="/images/icons/silk/control_start_blue.png" >
+							<rich:toolTip for="#{id}_ds_down_first">
+								<h:outputText value="Prima Pagina" />
+							</rich:toolTip>
+						</h:graphicImage>
+					</f:facet>
+					
+					<ui:insert name="requestParams"/>
+			</rich:datascroller>
+ 
+			<rich:modalPanel id="#{id}_deleteConfirmation" width="250" height="150">
+			   <f:facet name="header">
+			   	<h:outputText value="Conferma Operazione" />
+			   </f:facet>
+			   <h:panelGrid>
+			      <h:panelGrid columns="2">
+			         <h:graphicImage value="/images/001_11.png" />
+				 	<h:outputText value="Eliminare elementi selezionati?" style="font-weight: bold;" />
+			      </h:panelGrid>
+			      <h:panelGroup>
+			         <rich:spacer height="20px" />
+				 <input type="button" value="Ok"
+				   onclick="Richfaces.hideModalPanel(#{id}_'deleteConfirmation'); deleteSelected();return false" />
+				 <input type="button" value="Annulla"
+				   onclick="Richfaces.hideModalPanel(#{id}_'deleteConfirmation');return false" />
+			      </h:panelGroup>
+			   </h:panelGrid>
+			</rich:modalPanel>
+		</a4j:outputPanel>
+</ui:component>

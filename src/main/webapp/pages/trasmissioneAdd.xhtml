@@ -1,0 +1,42 @@
+<ui:composition template="/templates/defaultTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:a4j="http://richfaces.org/a4j">
+		
+		<ui:define name="navbar">
+			<ul>
+				<li>
+					<h:outputText value="/Nuova Trasmissione" />
+				</li>
+			</ul>
+		</ui:define>
+		
+		<ui:define name="body">
+			<a4j:keepAlive beanName="trasmissioniBean" />
+			<rich:messages ajaxRendered="true"/>
+			<h:form>
+				
+				<a4j:outputPanel id="info" ajaxRendered="true">
+					<h:outputText value="Esito ultima trasmissione: #{trasmissioniBean.esitoUpload}" rendered="#{not empty trasmissioniBean.esitoUpload}"/>
+					<h:outputText value="#{trasmissioniBean.transferError}" rendered="#{not empty trasmissioniBean.transferError}" style="FONT-WEIGHT: bold;"/>
+				</a4j:outputPanel>
+				<rich:spacer height="20px"/>
+				<rich:fileUpload id="fileUpload"
+								 allowFlash="false"
+								 fileUploadListener="#{trasmissioniBean.listener}"
+								 autoclear="false"
+								 maxFilesQuantity="1"
+								 addControlLabel="Sfoglia..."
+								 transferErrorLabel="Errore durante l'invio del file." >
+				
+					<a4j:support event="onuploadcomplete" action="#{trasmissioniBean.uploadCompleted}" />
+					<a4j:support event="onuploadcanceled" reRender="info"/>
+				</rich:fileUpload>
+				
+			</h:form>
+			
+		</ui:define>
+</ui:composition>

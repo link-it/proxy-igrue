@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<rich:page xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://java.sun.com/jstl/core" markupType="xhtml"
+	contentType="text/html" sidebarPosition="left" theme="simple"
+	sidebarWidth="250">
+	<f:loadBundle var="appInfo" basename="appInfo" />
+
+	<f:facet name="pageHeader">
+		<title>#{appInfo.appTitle}</title>	
+		<link
+			href="#{facesContext.externalContext.request.contextPath}/css/default.css"
+			rel="stylesheet" type="text/css" />
+			<link
+			href="#{facesContext.externalContext.request.contextPath}/css/linkit-main.css"
+			rel="stylesheet" type="text/css" />
+		<link
+			href="#{facesContext.externalContext.request.contextPath}/css/linkit-custom.css"
+			rel="stylesheet" type="text/css" />
+		<link
+			href="#{facesContext.externalContext.request.contextPath}/css/linkit-form.css"
+			rel="stylesheet" type="text/css" />
+		<link
+			href="#{facesContext.externalContext.request.contextPath}/css/crumbs.css"
+			rel="stylesheet" type="text/css" />
+		<link
+			href="#{facesContext.externalContext.request.contextPath}/css/mimetype.css"
+			rel="stylesheet" type="text/css" />
+		<link
+			href="#{facesContext.externalContext.request.contextPath}/css/icons.css"
+			rel="stylesheet" type="text/css" />
+		<script type="text/javascript">
+	       A4J.AJAX.onExpired = function(loc, expiredMsg){
+				return loc;
+	    	}
+	   </script>
+	</f:facet>
+	<f:facet name="header">
+		<h:panelGroup>
+			<h:form>
+				<table width="100%">
+					<tbody>
+						<tr>
+							<td align="left"><a
+								href="#{facesContext.externalContext.request.contextPath}/pages/welcome.jsf"
+								style="text-decoration: none; color: #000;">
+									<h2>
+										<h:outputText value="#{appInfo.appTitle}" />
+									</h2>
+							</a></td>
+							<td align="right"><c:if test="#{loginBean.isLoggedInAsString == 'true'}">
+									<h:outputLabel value="Id Amministrazione:  " />
+									<h:outputText id="idAmministrazioneCtr"
+										value="#{loginBean.idAmministrazione} "
+										style="FONT-WEIGHT: bold;" />
+									<h:outputLabel value=" | " />
+									<h:outputLabel value="Id Sistema:  " />
+									<h:outputText id="idSistemaCtr" value="#{loginBean.idSistema} "
+										style="FONT-WEIGHT: bold;" />
+									<h:outputLabel value=" | " />
+									<h:commandLink action="#{loginBean.logout}" value="Logout" />&#160;
+		       				 </c:if></td>
+						</tr>
+					</tbody>
+				</table>
+			</h:form>
+		</h:panelGroup>
+	</f:facet>
+	<!-- 
+      <f:facet name="subheader">
+      	<ui:insert name="pageHeader">Sub Header</ui:insert>
+      </f:facet>
+       -->
+	<f:facet name="sidebar" style="width:300px">
+		<ui:include src="/includes/menu.xhtml" />
+	</f:facet>
+	<!-- Body -->
+	<ui:include src="/includes/status.xhtml" />
+	<rich:panel>
+		<rich:jQuery name="activeRow" timing="onJScall"
+			query="hover(function(){jQuery(this).addClass('active')},function(){jQuery(this).removeClass('active')})" />
+		<rich:jQuery name="checkBrowser" timing="onJScall"
+			selector="a[id*='iconLink']"
+			query="addClass((jQuery.browser.msie &amp;&amp; jQuery.browser.version=='6.0') ? 'iconLinkie' : '')" />
+		<script type="text/javascript">
+			 jQuery(document).ready(function() {
+				if(jQuery.browser.msie){
+					if(jQuery.browser.version=="6.0")
+						jQuery("a[id*='iconLink']").addClass('iconLink');
+				}
+			 });
+		</script>
+		<h:panelGrid width="100%">
+			<rich:layout id="mainct">
+				<rich:layoutPanel id="navbar" position="top" width="100%">
+					<a4j:form>
+						<div id="breadcrumb-ct">
+							<div id="crumbs">
+								<ui:insert name="navbar"></ui:insert>
+							</div>
+						</div>
+					</a4j:form>
+				</rich:layoutPanel>
+
+				<rich:layoutPanel position="left" width="0">
+				</rich:layoutPanel>
+
+				<rich:layoutPanel id="body" position="center" width="100%">
+					<a4j:outputPanel id="errorsPlaceHolder" ajaxRendered="true">
+							<h:panelGroup layout="block" styleClass="#{facesContext.maximumSeverity.ordinal>=2 ? 'errors' : 'info'}" rendered="#{not empty facesContext.maximumSeverity}">
+								<h:panelGroup rendered="#{facesContext.maximumSeverity.ordinal>=2}">
+									<p>
+										<em>
+											<h:outputText value="Si sono verificati degli errori:"/>
+										</em>
+									</p>
+								</h:panelGroup>
+								<rich:spacer height="7px"/>
+								<rich:messages id="errorMessages">
+									<f:facet name="errorMarker">
+										<h:graphicImage value="/images/msgerror.png"/>
+									</f:facet>
+									<f:facet name="infoMarker">
+										<h:graphicImage value="/images/msginfo.png"/>
+									</f:facet>
+									<f:facet name="warnMarker">
+										<h:graphicImage value="/images/msgwarn.png"/>
+									</f:facet>
+								</rich:messages>
+							</h:panelGroup>
+						</a4j:outputPanel>
+						<div id="bodyToo" class="noborder">
+						<ui:insert name="body"></ui:insert>
+						</div>
+				</rich:layoutPanel>
+
+				<rich:layoutPanel position="bottom" width="100%">
+				</rich:layoutPanel>
+			</rich:layout>
+		</h:panelGrid>
+	</rich:panel>
+
+	<f:facet name="footer" align="center">
+		<h:outputLink value="http://www.link.it" target="_blank">
+			<h:graphicImage value="/images/lnk_web_linkhead.png" height="50"
+				title="Link.it" alt="Link.it" />
+		</h:outputLink>
+	</f:facet>
+
+</rich:page>

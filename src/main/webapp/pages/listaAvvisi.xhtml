@@ -1,0 +1,104 @@
+<ui:composition template="/templates/defaultTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:link="http://www.link.it">
+
+
+	<ui:define name="navbar">
+		<ul>
+			<li>
+				<h:outputText value="/Lista Avvisi Inviati" />
+			</li>
+		</ul>
+	</ui:define>
+	
+	<ui:define name="body">
+		
+		<h:form>
+			<a4j:keepAlive beanName="avvisiInviatiBean" />
+			<link:dataTable
+				id="avvisiInviatiList"
+				value="#{avvisiInviatiDataModel}"
+				headerText="Lista Avvisi Inviati"
+				showSelectRemoveAll="false"
+				mBean="#{avvisiInviatiBean}">
+				<f:facet name="noData">
+							<h:outputText value="Nessun Avviso Trovato." />
+						</f:facet>
+				
+
+				<rich:column width="25px">
+					<a4j:commandLink reRender="mailDetails" styleClass="link-plain"
+									oncomplete="Richfaces.showModalPanel('mailDetails')">
+						<h:graphicImage value="/images/icons/silk/zoom.png" />
+				        <f:setPropertyActionListener value="#{item}" target="#{avvisiInviatiBean.selectedElement}" />
+				        <rich:toolTip value="Mostra Dettagli"/>
+				    </a4j:commandLink>
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="Codice e-mail" />
+					</f:facet>
+					<h:outputText value="#{item.templateCode}" />
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="Oggetto" />
+					</f:facet>
+					<h:outputText value="#{item.subject}" />
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="Destinatari" />
+					</f:facet>
+					<h:outputText value="#{item.receivers}" />
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="Data Invio" />
+					</f:facet>
+					<h:outputText value="#{item.time}">
+						<f:convertDateTime type="both" timeZone="it_IT"/>
+					</h:outputText>
+				</rich:column>
+				
+			</link:dataTable>
+			
+		</h:form>
+		
+		<rich:modalPanel id="mailDetails" width="640" height="480">
+			<f:facet name="header">
+				<h:outputText value="Dettagli Avvisi" />
+			</f:facet>
+			
+			<h:panelGrid columns="2">
+				<h:outputText value="Codice e-mail" />
+				<h:outputText value="#{avvisiInviatiBean.selectedElement.templateCode}" />
+				<h:outputText value="Oggetto" />
+				<h:outputText value="#{avvisiInviatiBean.selectedElement.subject}" />
+				<h:outputText value="Destinatari" />
+				<h:outputText value="#{avvisiInviatiBean.selectedElement.receivers}" />
+				<h:outputText value="Data Invio" />
+				<h:outputText value="#{avvisiInviatiBean.selectedElement.time}">
+					<f:convertDateTime type="both" timeZone="it_IT"/>
+				</h:outputText>
+				<a href="#" onclick="Richfaces.hideModalPanel('mailDetails');return false">
+				  Chiudi
+				</a>
+			</h:panelGrid>
+			<rich:separator />
+			<br/>
+			<h:inputTextarea value="#{avvisiInviatiBean.selectedElement.content}" readonly="true" rows="25" cols="100"/>					
+		</rich:modalPanel>
+		
+	</ui:define>
+
+</ui:composition>

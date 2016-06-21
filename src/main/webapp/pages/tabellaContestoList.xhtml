@@ -1,0 +1,102 @@
+<ui:composition template="/templates/defaultTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:link="http://www.link.it">
+
+
+	<ui:define name="navbar">
+		<ul>
+			<li>
+				<h:outputText value="/Tabelle di Contesto" />
+			</li>
+		</ul>
+	</ui:define>
+	
+	<ui:define name="body">
+		<a4j:keepAlive beanName="tabelleContestoBean" />
+		<rich:messages style="font-weight: bold;"/>
+		<h:form>
+			<link:dataTable
+				id="tabelleContestoList"
+				value="#{tabellaContestoDataModel}"
+				headerText="Tabelle Contesto"
+				showSelectRemoveAll="false"
+				mBean="#{tabelleContestoBean}">
+				<f:facet name="noData">
+							<h:outputText value="Nessuna Tabella Trovata." />
+				</f:facet>
+				
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="Codice Tabella" />
+					</f:facet>
+					<h:outputText value="#{item.nometabella}" />
+				</rich:column>
+				
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="Titolo Tabella" />
+					</f:facet>
+					<h:outputText value="#{item.titolo}" />
+				</rich:column>
+							
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="Data Aggiornamento" />
+					</f:facet>
+					<h:outputText value="#{item.dataaggiornamento}" >
+						<f:convertDateTime type="both" locale="it_IT"/>
+					</h:outputText>
+				</rich:column>
+				
+				<rich:column>
+					<a4j:commandLink actionListener="#{tabelleContestoBean.elementSelected}" styleClass="link-plain">
+						<h:graphicImage value="/images/icons/silk/zoom.png" />
+						<f:setPropertyActionListener value="#{item}" target="#{tabelleContestoBean.selectedElement}" />
+						<rich:toolTip value="Mostra Dettagli"/>
+					</a4j:commandLink>
+					<rich:spacer width="5px"/>
+					<a4j:htmlCommandLink action="#{tabelleContestoBean.download}" styleClass="link-plain">
+						<h:graphicImage value="/images/icons/silk/package_down.png" />
+						<f:setPropertyActionListener value="#{item}" target="#{tabelleContestoBean.selectedElement}" />
+						<rich:toolTip value="Scarica"/>
+					</a4j:htmlCommandLink>
+				</rich:column>
+			</link:dataTable>
+			
+			<rich:spacer height="20px"/>
+			
+			<a4j:outputPanel id="detailPnl" ajaxRendered="true">
+				<rich:simpleTogglePanel switchType="ajax" 
+										width="100%" 
+										opened="true" 
+										rendered="#{not empty tabelleContestoBean.selectedElement.nometabella}" label="Dettagli Tabella: #{tabelleContestoBean.selectedElement.titolo}">
+							
+							<h:outputText value="La tabella non contiene dati." rendered="#{empty tabelleContestoBean.columnsValues}"/>
+							<a4j:outputPanel rendered="#{not empty tabelleContestoBean.columnsValues}">
+								<link:dataTable 
+									id="detailsTable"
+									value="#{tabelleContestoBean.columnsValues}" 
+									totalRows="#{tabelleContestoBean.sizeDetailsValues}"
+									showSelectRemoveAll="false"
+									mBean="#{tabelleContestoBean}">
+									<rich:columns value="#{tabelleContestoBean.columnsHeaders}" var="clm" index="idx">
+										<f:facet name="header">
+											<h:outputText value="#{clm}" />
+										</f:facet>
+										<h:outputText value="#{item.valori[idx]}" />
+									</rich:columns>
+								</link:dataTable>
+							</a4j:outputPanel>
+				</rich:simpleTogglePanel>
+			</a4j:outputPanel>
+			 
+		</h:form>
+		
+	</ui:define>
+
+</ui:composition>

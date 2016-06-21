@@ -1,0 +1,229 @@
+<ui:composition template="/templates/defaultTemplate.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:link="http://www.link.it">
+		
+		<ui:define name="navbar">
+			<ul>
+				<li>
+					<h:commandLink action="listaTrasmissioni" value="/Lista Trasmissioni" />
+				</li>
+				<li>
+					<h:outputText value="Dettaglio" />
+				</li>
+			</ul>
+		</ui:define>
+		<ui:define name="body">	
+			<a4j:keepAlive beanName="trasmissioniBean" />
+					
+			<h:form>
+				<h:panelGrid columns="3" columnClasses="aling-top,align-top">
+					<rich:panel>
+						<f:facet name="header">
+							<h:outputText value="Riepilogo" />
+						</f:facet>
+						<h:panelGrid columns="2">
+							<h:outputLabel value="File: " />
+							<h:outputText value="#{trasmissioniBean.selectedElement.file}" />
+							<h:outputLabel value="Ticket: " />
+							<h:outputText value="#{trasmissioniBean.selectedElement.ticket}" />
+							<h:outputLabel value="Data Invio: " />
+							<h:outputText value="#{trasmissioniBean.selectedElement.dataultimoinvio}" >
+								<f:convertDateTime type="both" locale="it_IT"/>
+							</h:outputText>
+							<h:outputLabel value="Esito invio" />
+							<h:outputText value="#{trasmissioniBean.selectedElement.esitoultimoinviodescrizione}" />
+							<h:outputLabel value="Stato Elaborazione: " />
+							<h:outputText value="#{trasmissioniBean.selectedElement.stato}" />
+						</h:panelGrid>
+					</rich:panel>
+					
+					<rich:spacer width="20px"/>
+					
+					<rich:panel>
+						<f:facet name="header">
+							<h:outputText value="Operazioni" style="FONT-SIZE: xx-small;"/>
+						</f:facet>
+						<h:panelGrid columns="1">
+							<a4j:commandLink id="ctx-iconLink" styleClass="icon-details" actionListener="#{trasmissioniBean.showDatiCtxListener}" value="Visualizza File di Colloquio" />
+							<a4j:commandLink id="eventi-iconLink" styleClass="icon-details" actionListener="#{trasmissioniBean.showEventiListener}" value="Visualizza Eventi" />
+							<a4j:commandLink id="esiti-iconLink" styleClass="icon-details" actionListener="#{trasmissioniBean.showEsitiListener}" value="Visualizza Esiti" />
+							<a4j:htmlCommandLink id="down-iconLink" styleClass="icon-download" 
+													action="#{trasmissioniBean.download}" 
+													value="Scarica File di Colloquio" 
+													target="_blank"
+													rendered="#{trasmissioniBean.downloadFile}"/>
+						</h:panelGrid>
+					</rich:panel>
+				</h:panelGrid>
+				
+				<rich:spacer height="20px"/>
+				
+				<a4j:outputPanel id="eventiPnl" ajaxRendered="true">
+					<h:outputText value="Nessun evento ricevuto per questa trasmissione." rendered="#{trasmissioniBean.showEventiPanel and empty trasmissioniBean.eventi}" style="FONT-WEIGHT: bold;"/>
+					<rich:dataTable var="item" value="#{trasmissioniBean.eventi}" width="100%" rendered="#{trasmissioniBean.showEventiPanel and not empty trasmissioniBean.eventi}">
+						<f:facet name="header">
+							<h:outputText value="Eventi" />
+						</f:facet>
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="Data" />
+							</f:facet>
+							<h:outputText value="#{item.startdate}">
+								<f:convertDateTime type="both"/>
+							</h:outputText>
+						</rich:column>
+						
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="Codice" />
+							</f:facet>
+							<h:outputText value="#{item.eventtypeCode}"/>
+						</rich:column>
+						
+						
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="Descrizione" />
+							</f:facet>
+							<h:outputText value="#{item.descrizione}"/>
+						</rich:column>
+						
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="Motivo" />
+							</f:facet>
+							<h:outputText value="#{item.reason}"/>
+						</rich:column>
+					</rich:dataTable>
+				</a4j:outputPanel>			
+							
+				<a4j:outputPanel id="esitiPnl" ajaxRendered="true">
+					<h:outputText value="Dati su Esiti non disponibili." rendered="#{trasmissioniBean.showEsitiPanel and empty trasmissioniBean.esiti}" style="FONT-WEIGHT: bold;"/>
+					<rich:dataTable var="item" value="#{trasmissioniBean.esiti}" width="100%" rendered="#{trasmissioniBean.showEsitiPanel and not empty trasmissioniBean.esiti}">
+						<f:facet name="header">
+							<h:outputText value="Esiti" />
+						</f:facet>
+						
+						<rich:column>
+							<h:outputText value="#{item.nome}" />
+						</rich:column>
+						
+						<rich:column>
+							<h:outputText value="#{item.descrizioneEsito}" rendered="#{!item.esitoPresente}"/>
+							<a4j:outputPanel rendered="#{item.esitoPresente}">
+								<a4j:commandLink styleClass="link-plain" action="#{trasmissioniBean.dettagliEsito}" reRender="detailPnl">
+									<h:graphicImage value="/images/icons/silk/zoom.png" />
+									<f:setPropertyActionListener value="#{item}" target="#{trasmissioniBean.selectedEsito}" />
+									<rich:toolTip value="Mostra Dettagli"/>
+								</a4j:commandLink>
+								<rich:spacer width="5px"/>
+								<a4j:htmlCommandLink styleClass="link-plain" action="#{trasmissioniBean.downloadEsito}" target="_blank">
+									<h:graphicImage value="/images/icons/silk/package_down.png" />
+									<f:setPropertyActionListener value="#{item}" target="#{trasmissioniBean.selectedEsito}" />
+									<rich:toolTip value="Scarica"/>
+								</a4j:htmlCommandLink>
+							</a4j:outputPanel>
+							
+						</rich:column>
+					</rich:dataTable>
+					
+					<rich:spacer height="20px"/>
+					<a4j:outputPanel id="detailPnl" ajaxRendered="true">
+						<rich:simpleTogglePanel switchType="ajax" width="100%" opened="true" rendered="#{not empty trasmissioniBean.selectedEsito and trasmissioniBean.showEsitiPanel}" label="Dettagli Esito: #{trasmissioniBean.selectedEsito.nome}">
+							
+							<link:dataTable
+								id="detailsTbl"
+								value="#{trasmissioniBean.selectedEsito.dettagliEsito}"
+								showSelectRemoveAll="false"
+								mBean="#{trasmissioniBean}"
+								totalRows="#{trasmissioniBean.sizeDettagliEsiti}">
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="Numero" />
+									</f:facet>
+									<h:outputText value="#{item.numeroProgressivo}" />
+								</rich:column>
+								
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="Tipo" />
+									</f:facet>
+									<h:outputText value="#{item.tipoRecord}" />
+								</rich:column>
+								
+								
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="Codice" />
+									</f:facet>
+									<h:outputText value="#{item.codiceIdentificativo}" />
+								</rich:column>
+								
+								
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="#{trasmissioniBean.selectedEsito.parteVariabileLbl}" />
+									</f:facet>
+									<a4j:repeat value="#{item.parteVariabile}" var="item">
+										<h:outputText value="#{item}" /><br/>
+									</a4j:repeat>
+								</rich:column>
+							</link:dataTable>
+							
+						</rich:simpleTogglePanel>
+					</a4j:outputPanel>
+				</a4j:outputPanel>
+				
+				<a4j:outputPanel id="datiCtxPnl" ajaxRendered="true">
+					<h:outputText value="Dati File di Colloquio non disponibili." rendered="#{trasmissioniBean.showDatiCtxPanel and empty trasmissioniBean.datiCtxValues}" style="FONT-WEIGHT: bold;"/>
+					<a4j:outputPanel id="ct" ajaxRendered="true" rendered="#{trasmissioniBean.showDatiCtxPanel and not empty trasmissioniBean.datiCtxValues}">
+						<link:dataTable 
+							id="datiCtxTbl" 
+							headerText="File di Colloquio"
+							value="#{trasmissioniBean.datiCtxValues}"
+							totalRows="#{trasmissioniBean.sizeDatiCtx}" 
+							mBean="#{trasmissioniBean}" 
+							showSelectRemoveAll="false">
+													
+							<rich:column>
+								<f:facet name="header">
+									<h:outputText value="Tipo" />
+								</f:facet>
+								<h:outputText value="#{item.tipoRecord}"/>
+							</rich:column>
+							
+							<rich:column>
+								<f:facet name="header">
+									<h:outputText value="#" />
+								</f:facet>
+								<h:outputText value="#{item.numeroProgressivo}"/>
+							</rich:column>
+							
+							<rich:columns value="#{trasmissioniBean.datiCtxColumnNames}" var="clm" index="idx">
+								<f:facet name="header">
+									<h:outputText value="#{clm}" />
+								</f:facet>
+								
+								<h:outputText value="#{item.parteVariabile[idx].valore}" rendered="#{item.parteVariabile[idx].isCorretto}"/>
+								
+								<rich:spacer height="20px" width="20px" styleClass="fieldError" rendered="#{not item.parteVariabile[idx].isCorretto}">
+									<rich:toolTip value="#{item.parteVariabile[idx].causa}" rendered="#{not item.parteVariabile[idx].isCorretto}"/>	
+								</rich:spacer>
+								
+								
+							</rich:columns>
+							
+						</link:dataTable>
+					</a4j:outputPanel>
+					
+					
+				</a4j:outputPanel>
+				
+			</h:form>
+		</ui:define>
+</ui:composition>
