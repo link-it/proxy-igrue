@@ -1,4 +1,5 @@
-# ProxyIGRUE - Reimplementazione free del Sender IGRUE del MEF
+# ProxyIGRUE
+## Reimplementazione free del Sender IGRUE del MEF
 
 L'architettura del Sistema di rendicontazione di IGRUE prevede un Sistema Centrale realizzato dal MEF che svolge il ruolo di collettore delle informazioni provenienti dalle diverse amministrazioni tramite servizi in Cooperazione Applicativa (SPCoop). Il MEF ha inizialmente distribuito anche un componente locale (il Sender IGRUE) per facilitare l'utilizzo del servizio da parte degli Enti.
 
@@ -12,7 +13,7 @@ Il Proxy IGRUE, realizzato nel 2010 da Link.it come un'alternativa a forte valor
 
 ## Contatti
 
-- Mailing list: [Utenti GovPay](http://www.gov4j.it/mailman/listinfo/utenti-igrue)
+- Mailing list: [Utenti Igrue](http://www.gov4j.it/mailman/listinfo/utenti-igrue)
 - Segnalazioni: [GitHub Issues](https://github.com/link-it/ProxyIGRUE/issues)
 
 ## Normative supportate
